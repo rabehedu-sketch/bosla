@@ -515,7 +515,7 @@ ar:{brand:"بوصلة",tagline:"دليلك للقطاع غير الربحي",
  pT:"تقويم التعليم",pP:"نعرض كل برنامج كما تنشره الجهة المقدمة، مع رابط صفحته الرسمية. المواعيد والرسوم قد تتغير، فراجعها في موقع الجهة قبل التقديم.",
  st_all:"كل البرامج",st_existing:"البرامج القائمة",st_current:"البرامج الحالية",st_new:"البرامج الجديدة",st_future:"البرامج المستقبلية",
  st_existing_d:"متاحة باستمرار",st_current_d:"مفتوحة للتسجيل الآن",st_new_d:"أُضيفت حديثًا",st_future_d:"قادمة قريبًا",
- masters:"ماجستير",bachelor:"بكالوريوس",diploma:"دبلوم",training:"برنامج تدريبي",scholarship:"منحة دراسية",onsite:"حضوري",hybrid:"مدمج",both:"العربية والإنجليزية",duration:"المدة",fee:"الرسوم",providers:"الكيانات",hsProg:"برنامج",hTry:"جرّب:",prT2:"الكيانات",prP2:"مراكز تدريب ومؤسسات مانحة وجامعات تؤهّل العاملين في القطاع غير الربحي وتدعم مسيرتهم المهنية.",prTrain:"جهات تدريبية",prGrant:"جهات تقدم منحًا دراسية",prUni:"جامعات ومعاهد في الدليل",prN:"{n} برامج",prSee:"عرض برامجها",certificate:"شهادة مهنية",course:"دورات",fellowship:"زمالة",directory:"دليل برامج",award:"جائزة",academy:"أكاديمية",all:"الكل",
+ fBtn:"التصنيفات",fClear:"مسح التصنيفات",fShown:"{n} برنامجًا",masters:"ماجستير",bachelor:"بكالوريوس",diploma:"دبلوم",training:"برنامج تدريبي",scholarship:"منحة دراسية",onsite:"حضوري",hybrid:"مدمج",both:"العربية والإنجليزية",duration:"المدة",fee:"الرسوم",providers:"الكيانات",hsProg:"برنامج",hTry:"جرّب:",prT2:"الكيانات",prP2:"مراكز تدريب ومؤسسات مانحة وجامعات تؤهّل العاملين في القطاع غير الربحي وتدعم مسيرتهم المهنية.",prTrain:"جهات تدريبية",prGrant:"جهات تقدم منحًا دراسية",prUni:"جامعات ومعاهد في الدليل",prN:"{n} برامج",prSee:"عرض برامجها",certificate:"شهادة مهنية",course:"دورات",fellowship:"زمالة",directory:"دليل برامج",award:"جائزة",academy:"أكاديمية",all:"الكل",
  local:"محلي",intl:"دولي",allScope:"محلي ودولي",region:"النطاق",
  type:"النوع",mode:"طريقة الدراسة",lang:"اللغة",provider:"الجهة",country:"الدولة",cost:"التكلفة",focus:"التركيز",status:"الحالة",
  online:"عن بُعد",checkSite:"حسب البرنامج",english:"الإنجليزية",arabic:"العربية",paid:"برسوم",free:"مجاني",
@@ -569,7 +569,7 @@ en:{brand:"Bosla",tagline:"Your guide to the nonprofit sector",
  pT:"Learning calendar",pP:"All sector training programs, grouped by status. Check deadlines and fees on each program's website.",
  st_all:"All programs",st_existing:"Ongoing programs",st_current:"Current programs",st_new:"New programs",st_future:"Upcoming programs",
  st_existing_d:"Always available",st_current_d:"Open for registration",st_new_d:"Recently added",st_future_d:"Coming soon",
- masters:"Master's",bachelor:"Bachelor's",diploma:"Diploma",training:"Training program",scholarship:"Scholarship",onsite:"On campus",hybrid:"Hybrid",both:"Arabic & English",duration:"Duration",fee:"Fees",providers:"Organizations",hsProg:"Programs",hTry:"Try:",prT2:"Organizations",prP2:"Training centers, funders and universities that build the skills of nonprofit professionals and support their careers.",prTrain:"Training providers",prGrant:"Scholarship funders",prUni:"Universities and institutes in the guide",prN:"{n} programs",prSee:"See their programs",certificate:"Certificate",course:"Courses",fellowship:"Fellowship",directory:"Directory",award:"Award",academy:"Academy",all:"All",
+ fBtn:"Filters",fClear:"Clear filters",fShown:"{n} programs",masters:"Master's",bachelor:"Bachelor's",diploma:"Diploma",training:"Training program",scholarship:"Scholarship",onsite:"On campus",hybrid:"Hybrid",both:"Arabic & English",duration:"Duration",fee:"Fees",providers:"Organizations",hsProg:"Programs",hTry:"Try:",prT2:"Organizations",prP2:"Training centers, funders and universities that build the skills of nonprofit professionals and support their careers.",prTrain:"Training providers",prGrant:"Scholarship funders",prUni:"Universities and institutes in the guide",prN:"{n} programs",prSee:"See their programs",certificate:"Certificate",course:"Courses",fellowship:"Fellowship",directory:"Directory",award:"Award",academy:"Academy",all:"All",
  local:"Local",intl:"International",allScope:"Local & international",region:"Scope",
  type:"Type",mode:"Mode",lang:"Language",provider:"Provider",country:"Country",cost:"Cost",focus:"Focus",status:"Status",
  online:"Online",checkSite:"See program",english:"English",arabic:"Arabic",paid:"Paid",free:"Free",
@@ -842,6 +842,8 @@ const L=o=>o==null?"":typeof o==="string"?o:(o[S.lang]||o.ar||"");
 const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const $=id=>document.getElementById(id);
 const arrow=()=>"";
+const host=u=>{try{return new URL(u).hostname.replace(/^www\./,"")}catch(_){return ""}};
+const logo=(u,name)=>{const h=host(u);const ini=esc(String(L(name)||"").replace(/^(جامعة|مؤسسة|جمعية|معهد|أكاديمية|المعهد|الجامعة|صندوق|مركز)\s+/,"").replace(/^ال/,"").trim().charAt(0));return `<span class="lg" aria-hidden="true"><b>${ini}</b>${h?`<img src="https://www.google.com/s2/favicons?domain=${h}&sz=128" alt="" loading="lazy" onload="if(this.naturalWidth<20){this.remove()}else{this.style.opacity=1;this.previousElementSibling.style.visibility='hidden'}" onerror="this.remove()">`:""}</span>`};
 function toast(m){const e=$("toast");e.textContent=m;e.classList.add("on");clearTimeout(toast._);toast._=setTimeout(()=>e.classList.remove("on"),2000)}
 const dOf=s=>{const d=new Date(s+"T00:00:00");d.setHours(0,0,0,0);return d};
 const daysTo=s=>Math.round((dOf(s)-TODAY)/864e5);
@@ -887,8 +889,8 @@ function programCard(p){
  const canApply=p.type!=="directory";
  return `<article class="card" style="--accent-top:${({masters:"#0F3557",bachelor:"#0F3557",diploma:"#2F7D8C",certificate:"#5E8B6E",course:"#BA6740",training:"#BA6740",fellowship:"#A86A12",scholarship:"#7A5C9E",academy:"#2F7D8C",award:"#7A5C9E"})[p.type]||"var(--line)"}">
   <div class="tags"><span class="tag">${t(p.type)}</span><span class="tag ${p.region==="local"?"cu":""}">${t(p.region)}</span>${p.status!=="existing"?`<span class="tag soonT">${t("st_"+p.status)}</span>`:""}${p.cost==="free"?`<span class="tag ok">${t("free")}</span>`:""}${p.fields.slice(0,2).map(f=>`<span class="tag" style="background:var(--sage-soft);color:var(--sage)">${t(f)}</span>`).join("")}</div>
-  <h3>${esc(L(p.name))}</h3>
-  <p>${esc(L(p.provider))}${L(p.country)?"، "+esc(L(p.country)):""}</p>
+  <div class="phead">${logo(p.url,p.provider)}<div><h3>${esc(L(p.name))}</h3>
+  <p>${esc(L(p.provider))}${L(p.country)?"، "+esc(L(p.country)):""}</p></div></div>
   <p>${esc(L(p.focus))}</p>
   <div class="meta"><div><span>${t("lang")}</span>${t(p.lng)}</div><div><span>${t("mode")}</span>${mode}</div><div><span>${t(p.fee?"fee":"cost")}</span>${p.fee?esc(L(p.fee)):cost}</div>${p.duration?`<div><span>${t("duration")}</span>${esc(L(p.duration))}</div>`:""}</div>
   ${canApply?`<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><span class="rsum">${rt.n?`${starStr(Math.round(rt.avg))} ${rt.avg.toFixed(1)} · ${rt.n} ${t("ratings")}`:t("rateIt")}</span>
@@ -953,12 +955,13 @@ function programsView(){
  const all=programs();
  const types=["all","masters","bachelor","diploma","fellowship","certificate","training","course","scholarship","academy","award","directory"].filter(k=>k==="all"||all.some(p=>p.type===k));
  const cnt=s=>s==="all"?all.length:all.filter(p=>p.status===s).length;
- const qq=(S.pq||"").trim().toLowerCase();const list=all.filter(p=>(!qq||[L(p.name),L(p.provider),L(p.focus),p.name.en||"",p.provider.en||""].join(" ").toLowerCase().includes(qq))&&(S.status==="all"||p.status===S.status)&&(S.filter==="all"||p.type===S.filter)&&(S.region==="all"||p.region===S.region)&&(!S.fields.length||S.fields.some(f=>p.fields.includes(f))));
+ const nAct=(S.filter!=="all")+(S.region!=="all")+S.fields.length;const qq=(S.pq||"").trim().toLowerCase();const list=all.filter(p=>(!qq||[L(p.name),L(p.provider),L(p.focus),p.name.en||"",p.provider.en||""].join(" ").toLowerCase().includes(qq))&&(S.status==="all"||p.status===S.status)&&(S.filter==="all"||p.type===S.filter)&&(S.region==="all"||p.region===S.region)&&(!S.fields.length||S.fields.some(f=>p.fields.includes(f))));
  return `${comparison()}<h2>${t("pT")}</h2><p class="lead">${t("pP")}</p><div class="qbar"><input id="pq" type="search" value="${esc(S.pq||"")}" placeholder="${t("searchPh")}" aria-label="${t("searchPh")}">${qq?`<span class="note" style="margin:0">${t("resultsFor",{q:esc(S.pq)})} · ${list.length}</span>`:""}</div>
   <div class="statusbar">${["all",...STATUSES].filter(s=>s==="all"||cnt(s)>0||S.status===s).map(s=>`<button class="sbtn" type="button" data-status="${s}" aria-pressed="${S.status===s}"><b>${cnt(s)}</b>${t("st_"+s)}${s!=="all"?`<span style="display:block">${t("st_"+s+"_d")}</span>`:""}</button>`).join("")}</div>
-  <div class="row2">${["all","local","intl"].map(k=>`<button class="chip" data-region="${k}" aria-pressed="${S.region===k}">${t(k==="all"?"allScope":k)}</button>`).join("")}<span class="sep"></span>
+  <div class="ftool"><button type="button" class="btn line" id="fToggle" aria-expanded="${!!S.fOpen}"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg>${t("fBtn")}${nAct?` <span class="fcount">${nAct}</span>`:""}</button>${nAct?`<button type="button" class="link" id="fClear" style="background:none;border:0;cursor:pointer;font:inherit">${t("fClear")}</button>`:""}<span class="note" style="margin:0">${t("fShown",{n:list.length})}</span></div>
+  <div class="fpanel" ${S.fOpen?"":"hidden"}><div class="row2">${["all","local","intl"].map(k=>`<button class="chip" data-region="${k}" aria-pressed="${S.region===k}">${t(k==="all"?"allScope":k)}</button>`).join("")}<span class="sep"></span>
   ${types.map(k=>`<button class="chip" data-filter="${k}" aria-pressed="${S.filter===k}">${t(k)}</button>`).join("")}</div>
-  <div class="fieldbox"><b>${t("fieldsT")}</b><div class="opts">${FIELDS.map(f=>`<label class="chk"><input type="checkbox" id="fld-${f}" data-field="${f}" ${S.fields.includes(f)?"checked":""}> ${t(f)}</label>`).join("")}</div></div>
+  <div class="fieldbox"><b>${t("fieldsT")}</b><div class="opts">${FIELDS.map(f=>`<label class="chk"><input type="checkbox" id="fld-${f}" data-field="${f}" ${S.fields.includes(f)?"checked":""}> ${t(f)}</label>`).join("")}</div></div></div>
   <div class="grid">${list.length?list.map(programCard).join(""):`<p class="note">${t("noMatch")}</p>`}</div>
   ${R.owner?suggestPanel()+adminForm():""}`;
 }
@@ -1021,16 +1024,16 @@ function contentView(){
 function providersView(){
  const all=programs();
  const grp=k=>PROVIDERS.filter(e=>e.kind===k);
- const card=e=>`<article class="card"><div class="tags">${e.city?`<span class="tag">${esc(L(e.city))}</span>`:""}</div><h3>${esc(L(e.name))}</h3><p>${esc(L(e.desc))}</p><div class="cardfoot"><a class="link" href="${esc(e.url)}" target="_blank" rel="noopener">${t("visit")} ${arrow()}</a></div></article>`;
- const unis={};all.forEach(p=>{const k=L(p.provider);if(!k)return;(unis[k]=unis[k]||{n:0,c:L(p.country),en:p.provider.en||k}).n++});
+ const card=e=>`<article class="card"><div class="phead">${logo(e.url,e.name)}<div><h3>${esc(L(e.name))}</h3>${e.city?`<p class="sm">${esc(L(e.city))}</p>`:""}</div></div><p>${esc(L(e.desc))}</p><div class="cardfoot"><a class="link" href="${esc(e.url)}" target="_blank" rel="noopener">${t("visit")} ${arrow()}</a></div></article>`;
+ const unis={};all.forEach(p=>{const k=L(p.provider);if(!k)return;(unis[k]=unis[k]||{n:0,c:L(p.country),en:p.provider.en||k,u:p.url}).n++});
  const ul=Object.entries(unis).sort((a,b)=>b[1].n-a[1].n);
  return `<h2>${t("prT2")}</h2><p class="lead">${t("prP2")}</p>
   <h3 class="sub">${t("prTrain")}</h3><div class="grid">${grp("training").map(card).join("")}</div>
   <h3 class="sub">${t("prGrant")}</h3><div class="grid">${grp("grant").map(card).join("")}</div>
-  <h3 class="sub">${t("prUni")}</h3><div class="grid">${ul.map(([k,v])=>`<article class="card"><h3>${esc(k)}</h3><p>${esc(v.c||"")}</p><div class="cardfoot"><span class="note" style="margin:0">${t("prN",{n:v.n})}</span><button class="link" type="button" data-prov="${esc(k)}" style="background:none;border:0;cursor:pointer;font:inherit">${t("prSee")} ${arrow()}</button></div></article>`).join("")}</div>`;
+  <h3 class="sub">${t("prUni")}</h3><div class="grid">${ul.map(([k,v])=>`<article class="card"><div class="phead">${logo(v.u,k)}<div><h3>${esc(k)}</h3><p class="sm">${esc(v.c||"")}</p></div></div><div class="cardfoot"><span class="note" style="margin:0">${t("prN",{n:v.n})}</span><button class="link" type="button" data-prov="${esc(k)}" style="background:none;border:0;cursor:pointer;font:inherit">${t("prSee")} ${arrow()}</button></div></article>`).join("")}</div>`;
 }
 function elearnView(){
- return `<h2>${t("elT")}</h2><p class="lead">${t("elP")}</p><div class="grid">${PLATFORMS.map(c=>`<article class="card"><div class="tags"><span class="tag ${c.lng==="arabic"?"cu":""}">${t(c.lng)}</span></div><h3>${esc(L(c.name))}</h3>
+ return `<h2>${t("elT")}</h2><p class="lead">${t("elP")}</p><div class="grid">${PLATFORMS.map(c=>`<article class="card"><div class="phead">${logo(c.url,c.name)}<div><h3>${esc(L(c.name))}</h3><p class="sm">${t(c.lng)}</p></div></div>
   <p>${esc(L(c.desc))}</p><div class="cardfoot"><a class="link" href="${c.url}" target="_blank" rel="noopener">${t("visit")} ${arrow()}</a></div></article>`).join("")}</div>`;
 }
 
@@ -1234,6 +1237,8 @@ document.addEventListener("click",async e=>{
  else if(id==="meBtn")go("account");
  else if(id==="clearCmp"){S.cmp=[];rerender()}
  else if(id==="goCmp"){if(S.cmp.length<2){toast(t("cmpEmpty"));return}setTimeout(()=>$("cmpBox")?.scrollIntoView({behavior:"smooth"}),30)}
+ else if(id==="fToggle"){S.fOpen=!S.fOpen;rerender()}
+ else if(id==="fClear"){S.filter="all";S.region="all";S.fields=[];rerender()}
  else if(id==="glMore"){S.glAll=true;rerender()}
  else if(id==="copyTpl"){try{navigator.clipboard.writeText(MOTIVATION).then(()=>toast(t("copied")),()=>{selectTpl();toast(t("copyFail"))})}catch(_){selectTpl();toast(t("copyFail"))}}
  else if(id==="rDel"&&R.db&&R.uid){const btn=e.target.closest("button");if(btn.dataset.sure!=="1"){btn.dataset.sure="1";btn.textContent=S.lang==="ar"?"تأكيد الحذف":"Confirm delete";return}
@@ -1467,6 +1472,23 @@ nav button[aria-selected="true"]{color:var(--navy);border-bottom-color:var(--nav
 
 .meta{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 16px}
 .meta div,.meta div:first-child{border:0;padding:0}
+
+/* شعارات الجهات */
+.phead{display:flex;gap:12px;align-items:flex-start}
+.phead>div{min-width:0}
+.phead h3{margin:0}
+.phead p{margin:2px 0 0}
+.phead .sm{font-size:13px;color:var(--muted)}
+.lg{position:relative;flex:none;width:44px;height:44px;border-radius:10px;border:1px solid var(--line);background:#fff;display:grid;place-items:center;overflow:hidden}
+.lg b{font-family:var(--kufi);font-size:18px;color:var(--navy);font-weight:700}
+.lg img{position:absolute;inset:7px;width:calc(100% - 14px);height:calc(100% - 14px);object-fit:contain;opacity:0;transition:opacity .2s}
+/* التصنيفات */
+.ftool{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.ftool .btn.line{display:inline-flex;align-items:center;gap:8px;padding:7px 14px}
+.ftool .btn.line[aria-expanded="true"]{border-color:var(--navy)}
+.fcount{background:var(--navy);color:#fff;border-radius:999px;font-size:11px;min-width:20px;height:20px;display:inline-grid;place-items:center;padding:0 6px;font-family:var(--latin)}
+.fpanel{border:1px solid var(--line);background:#fff;border-radius:10px;padding:14px 16px;margin-bottom:18px}
+.fpanel .fieldbox{margin-bottom:0}
 </style>
 <div class="inst" id="instBar" hidden><img src="/icon-192.png" alt=""><p id="instTxt"></p><button class="go" id="instGo" type="button" hidden></button><button class="x" id="instX" type="button" aria-label="إغلاق">✕</button></div>
 <script>
