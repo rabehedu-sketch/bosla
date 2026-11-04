@@ -519,7 +519,7 @@ ar:{brand:"بوصلة",tagline:"دليل البرامج التأهيلية لل�
  pT:"تقويم التعليم",pP:"نعرض كل برنامج كما تنشره الجهة المقدمة، مع رابط صفحته الرسمية. المواعيد والرسوم قد تتغير، فراجعها في موقع الجهة قبل التقديم.",
  st_all:"كل البرامج",st_existing:"البرامج القائمة",st_current:"البرامج الحالية",st_new:"البرامج الجديدة",st_future:"البرامج المستقبلية",
  st_existing_d:"متاحة باستمرار",st_current_d:"مفتوحة للتسجيل الآن",st_new_d:"أُضيفت حديثًا",st_future_d:"قادمة قريبًا",
- masters:"ماجستير",bachelor:"بكالوريوس",diploma:"دبلوم",training:"برنامج تدريبي",scholarship:"منحة دراسية",onsite:"حضوري",hybrid:"مدمج",both:"العربية والإنجليزية",duration:"المدة",fee:"الرسوم",providers:"الجهات التدريبية",prT2:"الجهات التدريبية",prP2:"الجهات التي تقدم برامج تأهيل العاملين في القطاع، والجهات التي تقدم منحًا دراسية لهم، كما وردت في «دليل المتخصص» من المركز الوطني لتنمية القطاع غير الربحي.",prTrain:"جهات تدريبية",prGrant:"جهات تقدم منحًا دراسية",prUni:"جامعات ومعاهد في الدليل",prN:"{n} برامج",prSee:"عرض برامجها",certificate:"شهادة مهنية",course:"دورات",fellowship:"زمالة",directory:"دليل برامج",award:"جائزة",academy:"أكاديمية",all:"الكل",
+ masters:"ماجستير",bachelor:"بكالوريوس",diploma:"دبلوم",training:"برنامج تدريبي",scholarship:"منحة دراسية",onsite:"حضوري",hybrid:"مدمج",both:"العربية والإنجليزية",duration:"المدة",fee:"الرسوم",providers:"الجهات التدريبية",hsProg:"برنامج",prT2:"الجهات التدريبية",prP2:"الجهات التي تقدم برامج تأهيل العاملين في القطاع، والجهات التي تقدم منحًا دراسية لهم، كما وردت في «دليل المتخصص» من المركز الوطني لتنمية القطاع غير الربحي.",prTrain:"جهات تدريبية",prGrant:"جهات تقدم منحًا دراسية",prUni:"جامعات ومعاهد في الدليل",prN:"{n} برامج",prSee:"عرض برامجها",certificate:"شهادة مهنية",course:"دورات",fellowship:"زمالة",directory:"دليل برامج",award:"جائزة",academy:"أكاديمية",all:"الكل",
  local:"محلي",intl:"دولي",allScope:"محلي ودولي",region:"النطاق",
  type:"النوع",mode:"طريقة الدراسة",lang:"اللغة",provider:"الجهة",country:"الدولة",cost:"التكلفة",focus:"التركيز",status:"الحالة",
  online:"عن بُعد",checkSite:"حسب البرنامج",english:"الإنجليزية",arabic:"العربية",paid:"برسوم",free:"مجاني",
@@ -573,7 +573,7 @@ en:{brand:"Bosla",tagline:"A directory of training programs for nonprofit profes
  pT:"Learning calendar",pP:"All sector training programs, grouped by status. Check deadlines and fees on each program's website.",
  st_all:"All programs",st_existing:"Ongoing programs",st_current:"Current programs",st_new:"New programs",st_future:"Upcoming programs",
  st_existing_d:"Always available",st_current_d:"Open for registration",st_new_d:"Recently added",st_future_d:"Coming soon",
- masters:"Master's",bachelor:"Bachelor's",diploma:"Diploma",training:"Training program",scholarship:"Scholarship",onsite:"On campus",hybrid:"Hybrid",both:"Arabic & English",duration:"Duration",fee:"Fees",providers:"Providers",prT2:"Training providers",prP2:"Organizations that train nonprofit workers and bodies that fund their studies, as listed in the National Center's Specialist Guide.",prTrain:"Training providers",prGrant:"Scholarship funders",prUni:"Universities and institutes in the guide",prN:"{n} programs",prSee:"See their programs",certificate:"Certificate",course:"Courses",fellowship:"Fellowship",directory:"Directory",award:"Award",academy:"Academy",all:"All",
+ masters:"Master's",bachelor:"Bachelor's",diploma:"Diploma",training:"Training program",scholarship:"Scholarship",onsite:"On campus",hybrid:"Hybrid",both:"Arabic & English",duration:"Duration",fee:"Fees",providers:"Providers",hsProg:"Programs",prT2:"Training providers",prP2:"Organizations that train nonprofit workers and bodies that fund their studies, as listed in the National Center's Specialist Guide.",prTrain:"Training providers",prGrant:"Scholarship funders",prUni:"Universities and institutes in the guide",prN:"{n} programs",prSee:"See their programs",certificate:"Certificate",course:"Courses",fellowship:"Fellowship",directory:"Directory",award:"Award",academy:"Academy",all:"All",
  local:"Local",intl:"International",allScope:"Local & international",region:"Scope",
  type:"Type",mode:"Mode",lang:"Language",provider:"Provider",country:"Country",cost:"Cost",focus:"Focus",status:"Status",
  online:"Online",checkSite:"See program",english:"English",arabic:"Arabic",paid:"Paid",free:"Free",
@@ -917,9 +917,7 @@ function home(){
  return `<section class="hero2"><div class="htext"><span class="kicker">${t("kicker")}</span><h1>${t("heroT")}</h1><p>${t("heroP")}</p>
   <form class="sform" id="heroSearch" role="search"><input id="heroQ" type="search" placeholder="${t("searchPh")}" aria-label="${t("searchPh")}"><button class="btn" type="submit">${t("searchBtn")}</button></form>
   <div class="chips2">${["f_fund","f_lead","f_vol","f_impact","f_gov"].map(f=>`<button type="button" data-topic="${f}">${t(f)}</button>`).join("")}</div></div>
-  <aside class="nextbox"><small>${t("inDir")}</small>
-   ${[["masters"],["certificate"],["course"],["fellowship"],["academy"],["award"]].map(([k])=>{const n=all.filter(p=>p.type===k).length;return n?`<button type="button" class="mini" data-type="${k}" style="font:inherit;background:none;border:0;border-top:1px solid var(--line);cursor:pointer;color:inherit;width:100%;text-align:start"><span>${t(k)}</span><b>${n}</b></button>`:""}).join("")}
-   <div class="mini" style="color:var(--muted);font-size:13px"><span>${t("localN",{n:all.filter(p=>p.region==="local").length})}</span><span>${t("intlN",{n:all.filter(p=>p.region==="intl").length})}</span></div></aside></section>
+  <div class="hstats">${[[all.length,t("hsProg")],[all.filter(p=>p.region==="local").length,t("local")],[all.filter(p=>p.region==="intl").length,t("intl")],[PROVIDERS.length,t("providers")]].map(([n,l],i)=>`<button type="button" ${i===3?'data-tab="providers"':'data-tab="programs"'} ${i===1?'data-region="local"':i===2?'data-region="intl"':''}><b>${n}</b><span>${l}</span></button>`).join("")}</div></section>
  <section class="section"><h2>${t("topicsT")}</h2><div class="topics">${FIELDS.map((f,i)=>{const n=all.filter(p=>p.fields.includes(f)).length;return n?`<button class="topic" type="button" data-topic="${f}" style="--tc:${TC[i%TC.length]}"><b>${t(f)}</b><span>${t("topicN",{n})}</span></button>`:""}).join("")}</div></section>
  ${canSee("journeys")?`<section class="section"><h2>${t("journeys")} <small class="tag">${t("hiddenTag")}</small></h2><p class="lead">${t("jP")}</p>${journeyCards()}</section>`:""}
  <section class="section"><div class="vhead" style="margin-bottom:10px"><h2>${t("latestT")}</h2><button class="btn line" data-go="programs" style="font-size:13px;padding:5px 14px">${t("allPrograms")}</button></div>
@@ -1196,7 +1194,7 @@ document.addEventListener("click",async e=>{
   const b=e.target.closest("[data-tab],[data-go],[data-filter],[data-region],[data-status],[data-follow],[data-star],[data-rate],[data-openj],[data-startj],[data-step],[data-joinc],[data-level],[data-delemp],[data-ans],[data-sg]");
  if(b){
   const d=b.dataset;
-  if(d.tab)go(d.tab);
+  if(d.tab){if(d.region){S.region=d.region;S.status="all";S.filter="all"}go(d.tab)}
   else if(d.go)go(d.go);
   else if(d.filter){S.filter=d.filter;rerender()}
   else if(d.region){S.region=d.region;rerender()}
@@ -1318,6 +1316,34 @@ render();
 .inst button{font:inherit;font-size:13px;border:0;border-radius:8px;padding:7px 12px;cursor:pointer}
 .inst .go{background:#BA6740;color:#fff;font-weight:600}
 .inst .x{background:transparent;color:#C9D3DE}
+
+/* واجهة مختصرة */
+.hero2{display:block;padding:22px 26px;margin-bottom:26px}
+.hero2 .htext{gap:10px;max-width:760px}
+.hero2 h1{font-size:24px;max-width:none}
+.hero2 p{font-size:14px;line-height:1.7}
+.sform{margin-top:2px;max-width:560px}
+.sform input{padding:9px 12px;font-size:14px}
+.sform .btn{padding:8px 16px}
+.hstats{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.hstats button{font:inherit;display:flex;align-items:baseline;gap:6px;background:rgba(247,245,237,.08);border:1px solid rgba(247,245,237,.18);color:#F7F5ED;border-radius:10px;padding:6px 12px;cursor:pointer}
+.hstats button:hover{background:rgba(247,245,237,.16)}
+.hstats b{font-size:17px;font-variant-numeric:tabular-nums}
+.hstats span{font-size:12px;color:#C9D3DE}
+@media(max-width:600px){
+ .hero2{padding:16px 16px;border-radius:14px;margin-bottom:20px}
+ .hero2 .kicker,.hero2 p{display:none}
+ .hero2 h1{font-size:19px;line-height:1.45}
+ .sform{flex-direction:row!important}
+ .sform .btn{padding:8px 14px}
+ .hero2 .chips2{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-inline:-16px;padding-inline:16px}
+ .hero2 .chips2::-webkit-scrollbar{display:none}
+ .hero2 .chips2 button{white-space:nowrap;font-size:12px}
+ .hstats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:12px}
+ .hstats button{flex-direction:column;align-items:center;gap:0;padding:6px 4px}
+ .hstats b{font-size:16px}.hstats span{font-size:10.5px;text-align:center}
+}
+
 </style>
 <div class="inst" id="instBar" hidden><img src="/icon-192.png" alt=""><p id="instTxt"></p><button class="go" id="instGo" type="button" hidden></button><button class="x" id="instX" type="button" aria-label="إغلاق">✕</button></div>
 <script>
