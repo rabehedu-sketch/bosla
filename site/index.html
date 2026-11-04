@@ -163,7 +163,7 @@ header{background:rgba(255,255,255,.94);backdrop-filter:blur(8px);color:var(--he
 .top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:14px 4px}
 .brand{display:flex;align-items:center;gap:10px}
 .brand svg{flex:none}
-.brand{gap:12px}.brand .mark{filter:drop-shadow(0 2px 6px rgba(15,53,87,.18))}.brand .wm{display:flex;flex-direction:column;min-width:0}.brand .nm{display:flex;align-items:baseline;gap:9px}.brand b{font-size:30px;font-weight:800;line-height:1;letter-spacing:-.01em;color:var(--head-fg)}.brand .latin{font-family:var(--latin);font-size:11px;font-weight:700;letter-spacing:.32em;color:#BA6740}.brand .wm small{margin-top:5px}@media(max-width:560px){.brand .mark{width:46px;height:46px}.brand b{font-size:25px}.brand .wm small{font-size:10.5px;max-width:190px;line-height:1.35}.brand .latin{font-size:9.5px;letter-spacing:.25em}}
+.brand{gap:12px}.brand .mark{filter:drop-shadow(0 2px 6px rgba(15,53,87,.18))}.brand .wm{display:flex;flex-direction:column;min-width:0}.brand .nm{display:flex;align-items:baseline;gap:9px}.brand b{font-size:30px;font-weight:800;line-height:1;letter-spacing:-.01em;color:var(--head-fg)}.brand .latin{font-family:var(--latin);font-size:11px;font-weight:700;letter-spacing:.32em;color:#BA6740}.brand .wm small{margin-top:5px;font-size:13px}@media(max-width:560px){.brand .mark{width:56px;height:56px}.brand b{font-size:25px}.brand .wm small{font-size:12px;max-width:190px;line-height:1.35}.brand .latin{font-size:9.5px;letter-spacing:.25em}}
 .brand small{display:block;font-size:12px;color:var(--head-muted);font-weight:400}
 .lang{font:inherit;font-size:13px;font-weight:600;background:transparent;color:var(--head-fg);border:1px solid var(--line);border-radius:999px;padding:5px 14px;cursor:pointer}
 .lang:hover{border-color:var(--copper);color:var(--copper)}
@@ -479,7 +479,7 @@ main,footer{position:relative;z-index:1}
 <header><div class="wrap">
   <div class="top">
     <div class="brand">
-      <svg class="mark" width="54" height="54" viewBox="0 0 64 64" aria-hidden="true">
+      <svg class="mark" width="66" height="66" viewBox="0 0 64 64" aria-hidden="true">
         <circle cx="32" cy="32" r="29" fill="#fff" stroke="#0F3557" stroke-width="2.6"/>
         <circle cx="32" cy="32" r="23" fill="none" stroke="#BA6740" stroke-width="1.2" opacity=".55"/>
         <g stroke="#0F3557" stroke-width="2" stroke-linecap="round"><path d="M32 5.5v5M32 53.5v5M5.5 32h5M53.5 32h5"/></g>
@@ -508,7 +508,7 @@ main,footer{position:relative;z-index:1}
 <script>
 const TODAY=new Date();TODAY.setHours(0,0,0,0);
 const T={
-ar:{brand:"بوصلة",tagline:"دليل البرامج التأهيلية للعاملين في القطاع غير الربحي",
+ar:{brand:"بوصلة",tagline:"دليلك للقطاع غير الربحي",
  home:"الرئيسية",journeys:"الرحلات التعليمية",programs:"تقويم التعليم",calendar:"الفعاليات والمواعيد",communities:"المجتمعات المهنية",content:"المحتوى الإثرائي",elearn:"التعلم عن بعد",funders:"للممولين",orgs:"للجمعيات",account:"حسابي",
  heroT:"البرامج التأهيلية للقطاع غير الربحي في مكان واحد",
  heroP:"نجمع الدورات والدبلومات والزمالات والفعاليات من مصادرها الرسمية ونحدّثها كل أسبوع. تختار ما يناسبك، وتقدّم مباشرة من موقع الجهة المقدمة.",searchPh:"ابحث عن برنامج أو جهة، مثل: تنمية الموارد",kicker:"دليل محدّث أسبوعيًا",inDir:"في الدليل الآن",localN:"{n} محلية",intlN:"{n} دولية",nextT:"أقرب فعالية",progCount:"برنامجًا تأهيليًا في الدليل",topicsT:"تصفّح حسب المجال",topicN:"{n} برامج",sourcesT:"نتابع البرامج من مصادرها الرسمية:",searchBtn:"بحث",latestT:"أحدث البرامج",allPrograms:"كل البرامج",resultsFor:"نتائج البحث عن «{q}»",clearSearch:"مسح البحث",
@@ -562,7 +562,7 @@ ar:{brand:"بوصلة",tagline:"دليل البرامج التأهيلية لل�
  rdNext:"خطواتك التالية:",rdAll:"أكملت كل المتطلبات الأساسية. ابدأ من بنك المنح.",rdAnswer:"أجب عن جميع الأسئلة لتظهر النتيجة.",e_ready:"إكمال مؤشر الجاهزية",
  sgT:"اقتراحات وكيل المحتوى",sgP:"برامج جمعها الوكيل من مصادر موثوقة. راجعها ثم اقبلها لتظهر في المنصة.",sgNone:"لا توجد اقتراحات جديدة.",sgOk:"قبول",sgNo:"رفض",sgSrc:"المصدر",sgAdded:"أُضيف إلى المنصة",sgDropped:"حُذف الاقتراح",
  hiddenTag:"مخفي",noMatch:"لا توجد نتائج مطابقة.",login:"سجّل الدخول لاستخدام هذه الميزة"},
-en:{brand:"Bosla",tagline:"A directory of training programs for nonprofit professionals",
+en:{brand:"Bosla",tagline:"Your guide to the nonprofit sector",
  home:"Home",journeys:"Learning journeys",programs:"Learning calendar",calendar:"Events & dates",communities:"Communities",content:"Learning content",elearn:"E-learning",funders:"For funders",orgs:"For nonprofits",account:"My account",
  heroT:"Nonprofit training programs, in one place",
  heroP:"We collect courses, diplomas, fellowships and events from their official sources and update them every week. Pick what fits you and apply directly on the provider's site.",searchPh:"Search a program or provider, e.g. fundraising",kicker:"Updated every week",inDir:"In the directory now",localN:"{n} local",intlN:"{n} international",nextT:"Next event",progCount:"training programs listed",topicsT:"Browse by field",topicN:"{n} programs",sourcesT:"We track programs from official sources:",searchBtn:"Search",latestT:"Latest programs",allPrograms:"All programs",resultsFor:"Results for \"{q}\"",clearSearch:"Clear search",
