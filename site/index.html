@@ -737,7 +737,7 @@ const PLATFORMS=[
 ];
 
 const CONTENT=[
- {id:"anan",kind:"podcast",name:{ar:"بودكاست عنان",en:"Anan Podcast"},by:{ar:"مؤسسة محمد بن سلمان «مسك»",en:"Misk Foundation"},desc:{ar:"حوارات مع خبراء حول القطاع الثالث، وإطلاق المشاريع غير الربحية، والقيادة الشبابية.",en:"Conversations with experts on the third sector, launching nonprofit projects and youth leadership."},url:"https://saudipedia.com/بودكاست-عنان"},
+ {id:"anan",lg:"misk.org.sa",kind:"podcast",name:{ar:"بودكاست عنان",en:"Anan Podcast"},by:{ar:"مؤسسة محمد بن سلمان «مسك»",en:"Misk Foundation"},desc:{ar:"حوارات مع خبراء حول القطاع الثالث، وإطلاق المشاريع غير الربحية، والقيادة الشبابية.",en:"Conversations with experts on the third sector, launching nonprofit projects and youth leadership."},url:"https://saudipedia.com/بودكاست-عنان"},
  {id:"ssir",kind:"article",name:{ar:"مجلة ستانفورد للابتكار الاجتماعي",en:"Stanford Social Innovation Review"},by:{ar:"جامعة ستانفورد",en:"Stanford University"},desc:{ar:"مقالات وأبحاث عالمية في الابتكار الاجتماعي والعطاء وقياس الأثر (بالإنجليزية).",en:"Global articles and research on social innovation, philanthropy and impact measurement."},url:"https://ssir.org"},
  {id:"candid",kind:"article",name:{ar:"مكتبة Candid للتعلم",en:"Candid Learning"},by:{ar:"Candid",en:"Candid"},desc:{ar:"أدلة ومقالات ودورات مجانية في جمع التبرعات وكتابة المقترحات (بالإنجليزية).",en:"Free guides, articles and courses on fundraising and proposal writing."},url:"https://learning.candid.org"},
  {id:"ncss",kind:"study",name:{ar:"مجلة البحوث والدراسات الاجتماعية",en:"Journal of Social Research and Studies"},by:{ar:"المركز الوطني للدراسات والبحوث الاجتماعية",en:"National Center for Social Studies"},desc:{ar:"دراسات محكّمة عن القطاع غير الربحي والتنمية الاجتماعية في المملكة.",en:"Peer-reviewed studies on the nonprofit sector and social development in Saudi Arabia."},url:"https://ncss.gov.sa"},
@@ -747,7 +747,7 @@ const CONTENT=[
 const NETWORKS=[
  {id:"prosocieties",cm:"cm_tech",name:{ar:"المجتمعات المهنية",en:"Professional Societies"},desc:{ar:"مجتمعات مهنية تجمع العاملين في القطاع غير الربحي حسب التخصص لتبادل الخبرة والمعرفة.",en:"Professional communities that bring nonprofit workers together by specialty to share expertise."},url:"https://prosocieties.com/"},
  {id:"athar",cm:"cm_beg",name:{ar:"منصة أثر",en:"Athar Platform"},desc:{ar:"منصة معرفية تخدم العاملين في القطاع غير الربحي.",en:"A knowledge platform serving nonprofit professionals."},url:"https://a3r.org/"},
- {id:"ncnpx",cm:"cm_exp",name:{ar:"حساب المركز الوطني لتنمية القطاع غير الربحي",en:"National Center for Non-Profit Sector on X"},desc:{ar:"الحساب الرسمي للمركز: أخبار القطاع، والأنظمة، والمبادرات، ومصطلحات القطاع.",en:"The center's official account: sector news, regulations, initiatives and terminology."},url:"https://x.com/ncnp_sa"}
+ {id:"ncnpx",lg:"ncnp.gov.sa",cm:"cm_exp",name:{ar:"حساب المركز الوطني لتنمية القطاع غير الربحي",en:"National Center for Non-Profit Sector on X"},desc:{ar:"الحساب الرسمي للمركز: أخبار القطاع، والأنظمة، والمبادرات، ومصطلحات القطاع.",en:"The center's official account: sector news, regulations, initiatives and terminology."},url:"https://x.com/ncnp_sa"}
 ];;
 
 /* journeys: stages hold item ids from programs (P:), platforms (L:), content (C:), networks (N:) */
@@ -844,7 +844,7 @@ const $=id=>document.getElementById(id);
 const arrow=()=>"";
 const host=u=>{try{return new URL(u).hostname.replace(/^www\./,"")}catch(_){return ""}};
 const SOCIAL=/(^|\.)(x\.com|twitter\.com|instagram\.com|linktr\.ee|linkedin\.com|facebook\.com|t\.me|wa\.me|youtube\.com|tiktok\.com|apple\.com|bit\.ly|me-qr\.com|shorturl\.at)$/;
-const logo=(u,name)=>{let h=host(u);if(SOCIAL.test(h))h="";const ini=esc(String(L(name)||"").replace(/^(جامعة|مؤسسة|جمعية|معهد|أكاديمية|المعهد|الجامعة|صندوق|مركز)\s+/,"").replace(/^ال/,"").trim().charAt(0));return `<span class="lg" aria-hidden="true"><b>${ini}</b>${h?`<img src="https://www.google.com/s2/favicons?domain=${h}&sz=128" alt="" loading="lazy" onload="if(this.naturalWidth<20){this.remove()}else{this.style.opacity=1;this.previousElementSibling.style.visibility='hidden'}" onerror="this.remove()">`:""}</span>`};
+const logo=(u,name,ov)=>{let h=ov||host(u);if(!ov&&SOCIAL.test(h))h="";const ini=esc(String(L(name)||"").replace(/^(جامعة|مؤسسة|جمعية|معهد|أكاديمية|المعهد|الجامعة|صندوق|مركز|بودكاست|مجلة|مكتبة|منصة)\s+/,"").replace(/^ال/,"").trim().charAt(0));return `<span class="lg" aria-hidden="true"><b>${ini}</b>${h?`<img src="https://www.google.com/s2/favicons?domain=${h}&sz=128" alt="" loading="lazy" onload="if(this.naturalWidth<20){this.remove()}else{this.style.opacity=1;this.previousElementSibling.style.visibility='hidden'}" onerror="this.remove()">`:""}</span>`};
 function toast(m){const e=$("toast");e.textContent=m;e.classList.add("on");clearTimeout(toast._);toast._=setTimeout(()=>e.classList.remove("on"),2000)}
 const dOf=s=>{const d=new Date(s+"T00:00:00");d.setHours(0,0,0,0);return d};
 const daysTo=s=>Math.round((dOf(s)-TODAY)/864e5);
@@ -1009,7 +1009,7 @@ function communitiesView(){
  return `<h2>${t("cmT")}</h2><p class="lead">${t("cmP")}</p><div class="grid">${["cm_beg","cm_exp","cm_tech"].map(c=>`<article class="card"><div class="chead"><div class="ctype g"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-3.5 3.5-5 6.5-5s5.5 1.5 6.5 5"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14c2.5 0 4 1.5 4.5 4"/></svg></div><div><h3>${t(c)}</h3><span class="members">${t("members",{n:cnt(c)})}</span></div></div>
   <p>${t(c+"_d")}</p>${NETWORKS.filter(n=>n.cm===c).map(n=>`<p style="font-size:13px">↳ <a class="link" href="${n.url}" target="_blank" rel="noopener">${esc(L(n.name))}</a></p>`).join("")}
   <div class="cardfoot">${mine.includes(c)?`<button class="follow" type="button" data-joinc="${c}" aria-pressed="true">✓ ${t("joined")}</button>`:`<button class="btn" type="button" data-joinc="${c}">${t("joinC")}</button>`}</div></article>`).join("")}</div>
-  <h3 class="sub">${t("extNets")}</h3><div class="grid">${NETWORKS.map(n=>`<article class="card"><h3>${esc(L(n.name))}</h3><p>${esc(L(n.desc))}</p><div class="cardfoot"><a class="link" href="${n.url}" target="_blank" rel="noopener">${t("join")} ${arrow()}</a></div></article>`).join("")}</div>`;
+  <h3 class="sub">${t("extNets")}</h3><div class="grid">${NETWORKS.map(n=>`<article class="card"><div class="phead">${logo(n.url,n.name,n.lg)}<div><h3>${esc(L(n.name))}</h3></div></div><p>${esc(L(n.desc))}</p><div class="cardfoot"><a class="link" href="${n.url}" target="_blank" rel="noopener">${t("join")} ${arrow()}</a></div></article>`).join("")}</div>`;
 }
 
 const ICON={podcast:'<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>',article:'<path d="M6 3h9l4 4v14H6z"/><path d="M9 12h7M9 16h7M9 8h3"/>',study:'<path d="M4 19V5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2z"/><path d="M8 7h6"/>'};
@@ -1017,7 +1017,7 @@ const glossItems=all=>{if(!all.length)return `<p>${t("noMatch")}</p>`;const q=S.
 const AR_N=x=>String(x).replace(/[\u064B-\u0652\u0640]/g,"").replace(/[أإآ]/g,"ا").replace(/ى/g,"ي").replace(/ة/g,"ه");
 const glossFilter=()=>{const q=AR_N(S.q.trim().toLowerCase());return GLOSS.filter(g=>!q||AR_N(g[0]).includes(q)||g[1].toLowerCase().includes(q)||AR_N(g[2]).includes(q))};
 function contentView(){
- return `<h2>${t("ctT")}</h2><p class="lead">${t("ctP")}</p><div class="grid">${CONTENT.map(c=>`<article class="card"><div class="chead"><div class="ctype ${c.kind==="article"?"b":c.kind==="study"?"g":""}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">${ICON[c.kind]}</svg></div>
+ return `<h2>${t("ctT")}</h2><p class="lead">${t("ctP")}</p><div class="grid">${CONTENT.map(c=>`<article class="card"><div class="chead">${logo(c.url,c.by&&L(c.by)!=="بودكاست صوتي"?c.by:c.name,c.lg)}
   <div style="min-width:0"><div class="tags"><span class="tag">${t(c.kind)}</span></div><h3 style="margin-top:6px">${esc(L(c.name))}</h3><p>${esc(L(c.by))}</p></div></div>
   <p>${esc(L(c.desc))}</p><div class="cardfoot"><a class="link" href="${c.url}" target="_blank" rel="noopener">${t("open")} ${arrow()}</a></div></article>`).join("")}</div>
  <h3 class="sub">${t("glT")}</h3><p class="note" style="margin-top:4px">${t("glSrc")} <a class="link" href="https://siwar.ksaa.gov.sa/public-dict-information/2885a7fb-c347-4390-92c9-808c9b9b17c2" target="_blank" rel="noopener">${t("open")}</a></p><input class="search" id="glq" type="search" placeholder="${t("glSearch")}" value="${esc(S.q)}" aria-label="${t("glSearch")}"><div class="gloss" id="glList">${glossItems(glossFilter())}</div>`;
