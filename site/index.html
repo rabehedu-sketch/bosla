@@ -469,6 +469,27 @@ main,footer{position:relative;z-index:1}
  main{padding-bottom:110px}
  .tray{bottom:calc(64px + env(safe-area-inset-bottom,0px))}
 }
+
+/* أحدث البرامج في الواجهة */
+.hero3 .hlatest{max-width:560px}
+.hero3 .hlatest h2{font-size:16px;margin:4px 0 10px;color:var(--navy)}
+.hero3 .hlatest ol{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.hero3 .hlatest li button{font:inherit;width:100%;display:grid;grid-template-columns:1fr auto;gap:2px 10px;align-items:center;text-align:start;background:none;border:0;border-bottom:1px solid var(--line);padding:10px 0;cursor:pointer;color:inherit}
+.hero3 .hlatest .nm{font-weight:600;color:var(--navy);font-size:15px}
+.hero3 .hlatest .sb{grid-row:2;font-size:13px;color:var(--muted)}
+.hero3 .hlatest .tag{grid-row:1/3;grid-column:2;white-space:nowrap}
+.hero3 .hlatest li button:hover .nm{text-decoration:underline;text-underline-offset:4px}
+.hero3 .hmore{font:inherit;font-size:14px;font-weight:600;background:none;border:0;padding:10px 0 0;color:var(--copper,#BA6740);cursor:pointer}
+.tag.end{background:#ECEDEF;color:#6B7280}
+/* البحث العائم */
+.fab{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:8;display:flex;flex-direction:row-reverse;align-items:center;gap:8px}
+.fabbtn{width:54px;height:54px;border-radius:50%;border:0;background:var(--navy,#0F3557);color:#fff;display:grid;place-items:center;cursor:pointer;box-shadow:0 6px 18px rgba(15,53,87,.28)}
+.fabbtn:hover{filter:brightness(1.12)}
+.fabform{display:flex;gap:6px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:5px;box-shadow:0 8px 24px rgba(0,0,0,.12);width:min(320px,calc(100vw - 96px))}
+.fabform[hidden]{display:none}
+.fabform input{flex:1;min-width:0;font:inherit;font-size:14px;border:0;padding:8px 10px;outline:none;background:transparent}
+.fabform .btn{padding:7px 14px;font-size:14px}
+@media (max-width:700px){.fab{bottom:calc(76px + env(safe-area-inset-bottom,0px))}}
 </style>
 
 <div id="app" dir="rtl" lang="ar">
@@ -498,6 +519,7 @@ main,footer{position:relative;z-index:1}
 <main><div class="wrap" id="view"></div></main>
 <footer class="sitefoot" id="siteFoot"></footer>
 <div class="tray" id="tray" hidden><div class="wrap"><span id="trayText"></span><div style="display:flex;gap:8px"><button class="btn line" id="clearCmp" type="button"></button><button class="btn" id="goCmp" type="button"></button></div></div></div>
+<div class="fab" id="fab"><form class="fabform" id="heroSearch" role="search" hidden><input id="heroQ" type="search"><button class="btn" type="submit" id="heroGo"></button></form><button class="fabbtn" id="fabBtn" type="button" aria-expanded="false" aria-controls="heroSearch"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></button></div>
 <div class="toast" id="toast" role="status"></div>
 </div>
 
@@ -505,7 +527,7 @@ main,footer{position:relative;z-index:1}
 const TODAY=new Date();TODAY.setHours(0,0,0,0);
 const T={
 ar:{brand:"بوصلة",tagline:"دليلك للقطاع غير الربحي",
- home:"الرئيسية",journeys:"الرحلات التعليمية",programs:"تقويم التعليم",calendar:"الفعاليات والمواعيد",communities:"المجتمعات المهنية",content:"المحتوى الإثرائي",elearn:"التعلم عن بعد",funders:"للممولين",orgs:"للجمعيات",account:"حسابي",
+ home:"الرئيسية",journeys:"الرحلات التعليمية",programs:"تقويم التعليم",calendar:"الفعاليات والملتقيات",communities:"المجتمعات المهنية",content:"المحتوى الإثرائي",elearn:"التعليم عن بعد",scholar:"المنح التعليمية",funders:"للممولين",orgs:"للجمعيات",account:"حسابي",
  heroT:"اعرف وجهتك في القطاع غير الربحي",
  heroP:"برامج الماجستير والدبلومات والزمالات والدورات المحلية والدولية للعاملين في القطاع، من مصادرها الرسمية، مع رابط التقديم المباشر.",searchPh:"ابحث عن برنامج أو جهة، مثل: تنمية الموارد",kicker:"دليل محدّث أسبوعيًا",inDir:"في الدليل الآن",localN:"{n} محلية",intlN:"{n} دولية",nextT:"أقرب فعالية",progCount:"برنامجًا تأهيليًا في الدليل",topicsT:"تصفّح حسب المجال",topicN:"{n} برامج",sourcesT:"نتابع البرامج من مصادرها الرسمية:",searchBtn:"بحث",latestT:"أحدث البرامج",allPrograms:"كل البرامج",resultsFor:"نتائج البحث عن «{q}»",clearSearch:"مسح البحث",
  startJ:"اختر رحلتك",exploreP:"تصفح البرامج",
@@ -513,8 +535,8 @@ ar:{brand:"بوصلة",tagline:"دليلك للقطاع غير الربحي",
  forWhom:"لمن بوصلة؟",fw_w:"للعاملين بالقطاع",fw_wp:"حساب موحد وسيرة ذاتية، وبرامج تأهيلية موثوقة.",fw_f:"للممولين",fw_fp:"توجيه الدعم نحو البرامج التي يحتاجها القطاع دون تكرار.",fw_o:"للجمعيات",fw_op:"خطط تعليمية للموظفين والوصول إلى كفاءات أفضل.",fw_e:"للجهات التعليمية",fw_ep:"الوصول للعاملين أسرع، وتقييم حقيقي للبرامج من المتعلمين.",
  jT:"الرحلات التعليمية",jP:"خمس رحلات مرتبة حسب موقعك في القطاع. ابدأ رحلتك وعلّم كل خطوة تنجزها.",jStart:"ابدأ هذه الرحلة",jStarted:"رحلتك الحالية",jFor:"لمن هذه الرحلة؟",jDone:"أنجزت",jMark:"علّم كمنجز",jProgress:"التقدم",
  pT:"تقويم التعليم",pP:"نعرض كل برنامج كما تنشره الجهة المقدمة، مع رابط صفحته الرسمية. المواعيد والرسوم قد تتغير، فراجعها في موقع الجهة قبل التقديم.",
- st_all:"كل البرامج",st_existing:"البرامج القائمة",st_current:"البرامج الحالية",st_new:"البرامج الجديدة",st_future:"البرامج المستقبلية",
- st_existing_d:"متاحة باستمرار",st_current_d:"مفتوحة للتسجيل الآن",st_new_d:"أُضيفت حديثًا",st_future_d:"قادمة قريبًا",
+ st_all:"كل البرامج",st_open:"مفتوح الآن",st_soon:"قريبًا",st_closed:"مغلق",
+ st_open_d:"التسجيل متاح",st_soon_d:"يفتح التسجيل قريبًا",st_closed_d:"انتهى التسجيل",more:"المزيد",
  fBtn:"التصنيفات",fClear:"مسح التصنيفات",fShown:"{n} برنامجًا",masters:"ماجستير",bachelor:"بكالوريوس",diploma:"دبلوم",training:"برنامج تدريبي",scholarship:"منحة دراسية",onsite:"حضوري",hybrid:"مدمج",both:"العربية والإنجليزية",duration:"المدة",fee:"الرسوم",providers:"الكيانات",hsProg:"برنامج",hTry:"جرّب:",prT2:"الكيانات",prP2:"مراكز تدريب ومؤسسات مانحة وجامعات تؤهّل العاملين في القطاع غير الربحي وتدعم مسيرتهم المهنية.",prTrain:"جهات تدريبية",prGrant:"جهات تقدم منحًا دراسية",prUni:"جامعات ومعاهد في الدليل",prN:"{n} برامج",prSee:"عرض برامجها",certificate:"شهادة مهنية",course:"دورات",fellowship:"زمالة",directory:"دليل برامج",award:"جائزة",academy:"أكاديمية",all:"الكل",
  local:"محلي",intl:"دولي",allScope:"محلي ودولي",region:"النطاق",
  type:"النوع",mode:"طريقة الدراسة",lang:"اللغة",provider:"الجهة",country:"الدولة",cost:"التكلفة",focus:"التركيز",status:"الحالة",
@@ -523,14 +545,14 @@ ar:{brand:"بوصلة",tagline:"دليلك للقطاع غير الربحي",
  cmpT:"مقارنة البرامج",cmpEmpty:"اختر برنامجين أو ثلاثة لمقارنتها.",cmpMax:"يمكن مقارنة ثلاثة برامج كحد أقصى",
  fieldsT:"تصفية المجالات",f_waqf:"إدارة الأوقاف",f_csr:"المسؤولية المجتمعية",f_lead:"القيادة",f_gov:"الحوكمة",f_dev:"العمل التنموي",f_fund:"تنمية الموارد",f_vol:"التطوع",f_impact:"قياس الأثر",
  rateIt:"قيّم البرنامج:",ratings:"تقييم",noRatings:"لا تقييمات بعد",
- evT:"الفعاليات والمواعيد",evForums:"الملتقيات والمعارض",evDays:"الأيام العالمية",evDaysP:"أيام دولية مرتبطة بالقطاع غير الربحي، تتكرر كل سنة في الموعد نفسه.",evP:"ملتقيات ومعارض القطاع غير الربحي والأيام العالمية المرتبطة به. تابع أي موعد ليصلك تنبيه قبله.",
+ evT:"الفعاليات والملتقيات",evForums:"الملتقيات والمعارض",evDays:"الأيام العالمية",evDaysP:"أيام دولية مرتبطة بالقطاع غير الربحي، تتكرر كل سنة في الموعد نفسه.",evP:"ملتقيات ومعارض القطاع غير الربحي والأيام العالمية المرتبطة به. تابع أي موعد ليصلك تنبيه قبله.",
  ended:"انتهت",upcoming:"قادمة",daysLeft:"بعد {n} يوم",today:"اليوم",follow:"تابِع",following:"تتابعها",
  cmT:"المجتمعات المهنية",cmP:"ثلاثة مجتمعات داخل بوصلة، ومعها مصادر مهنية خارجية تفيدك.",cm_beg:"مجتمع المبتدئين",cm_beg_d:"لمن انضم حديثًا إلى القطاع: أسئلة البداية، والمفاهيم الأساسية، وأول البرامج.",cm_exp:"مجتمع الخبراء",cm_exp_d:"لأصحاب الخبرة: تبادل التجارب، والإرشاد، وصناعة المعرفة للقطاع.",cm_tech:"مجتمع التخصصات الفنية",cm_tech_d:"للمتخصصين في تنمية الموارد، وقياس الأثر، والحوكمة، والتطوع.",
  joinC:"انضم للمجتمع",joined:"أنت عضو",members:"{n} عضو",extNets:"مصادر مهنية خارجية",join:"زيارة",
- ctT:"المحتوى الإثرائي",ctP:"بودكاست ومقالات ودراسات، وقاموس مصطلحات القطاع غير الربحي.",podcast:"بودكاست",article:"مقالات",study:"دراسة",open:"افتح",
+ schT:"المنح التعليمية",schP:"منح دراسية وبرامج ابتعاث تدعم العاملين في القطاع غير الربحي، والجهات التي تقدمها.",schProg:"المنح وبرامج الابتعاث",schOrgs:"جهات تقدم منحًا دراسية",searchOpen:"فتح البحث",ctT:"المحتوى الإثرائي",ctP:"بودكاست ومقالات ودراسات، وقاموس مصطلحات القطاع غير الربحي.",podcast:"بودكاست",article:"مقالات",study:"دراسة",open:"افتح",
  tplT:"نماذج جاهزة",copy:"نسخ النموذج",copied:"نُسخ النموذج",copyFail:"حدد النص وانسخه يدويًا",
  glT:"معجم مصطلحات القطاع غير الربحي",glSrc:"516 مصطلحًا من المعجم الذي أصدره مجمع الملك سلمان العالمي للغة العربية بالتعاون مع المركز الوطني لتنمية القطاع غير الربحي.",glMore:"عرض كل المصطلحات ({n})",glSearch:"ابحث عن مصطلح بالعربي أو الإنجليزي",
- elT:"منصات التعلم عن بعد",elP:"منصات موثوقة فيها دورات في القيادة والإدارة وجمع التبرعات.",
+ elT:"منصات التعليم عن بعد",elP:"منصات موثوقة فيها دورات في القيادة والإدارة وجمع التبرعات.",
  fdT:"للممولين: وجّه دعمك حيث الاحتياج",fdP:"تعرض بوصلة الفجوات التأهيلية في القطاع من واقع طلبات العاملين وعدد البرامج المتاحة في كل رحلة، لتدعم البرامج التي يحتاجها القطاع دون تكرار.",
  gapT:"الفجوة في كل رحلة",gapPrograms:"{n} برامج متاحة",gapReq:"{n} طلب",gapLow:"احتياج مرتفع",
  reqT:"احتياجات طلبها العاملون",reqNone:"لا توجد طلبات بعد. يضيف العاملون احتياجاتهم من صفحة «حسابي».",
@@ -559,7 +581,7 @@ ar:{brand:"بوصلة",tagline:"دليلك للقطاع غير الربحي",
  sgT:"اقتراحات وكيل المحتوى",sgP:"برامج جمعها الوكيل من مصادر موثوقة. راجعها ثم اقبلها لتظهر في المنصة.",sgNone:"لا توجد اقتراحات جديدة.",sgOk:"قبول",sgNo:"رفض",sgSrc:"المصدر",sgAdded:"أُضيف إلى المنصة",sgDropped:"حُذف الاقتراح",
  hiddenTag:"مخفي",noMatch:"لا توجد نتائج مطابقة.",login:"سجّل الدخول لاستخدام هذه الميزة"},
 en:{brand:"Bosla",tagline:"Your guide to the nonprofit sector",
- home:"Home",journeys:"Learning journeys",programs:"Learning calendar",calendar:"Events & dates",communities:"Communities",content:"Learning content",elearn:"E-learning",funders:"For funders",orgs:"For nonprofits",account:"My account",
+ home:"Home",journeys:"Learning journeys",programs:"Learning calendar",calendar:"Events & forums",communities:"Communities",content:"Learning content",elearn:"E-learning",scholar:"Scholarships",funders:"For funders",orgs:"For nonprofits",account:"My account",
  heroT:"Nonprofit training programs, in one place",
  heroP:"We collect courses, diplomas, fellowships and events from their official sources and update them every week. Pick what fits you and apply directly on the provider's site.",searchPh:"Search a program or provider, e.g. fundraising",kicker:"Updated every week",inDir:"In the directory now",localN:"{n} local",intlN:"{n} international",nextT:"Next event",progCount:"training programs listed",topicsT:"Browse by field",topicN:"{n} programs",sourcesT:"We track programs from official sources:",searchBtn:"Search",latestT:"Latest programs",allPrograms:"All programs",resultsFor:"Results for \"{q}\"",clearSearch:"Clear search",
  startJ:"Choose your journey",exploreP:"Browse programs",
@@ -567,8 +589,8 @@ en:{brand:"Bosla",tagline:"Your guide to the nonprofit sector",
  forWhom:"Who is Bosla for?",fw_w:"For professionals",fw_wp:"A unified account and CV, and trusted training programs.",fw_f:"For funders",fw_fp:"Direct support to the programs the sector needs, without duplication.",fw_o:"For nonprofits",fw_op:"Staff learning plans and access to better talent.",fw_e:"For training providers",fw_ep:"Faster reach to professionals and real program ratings from learners.",
  jT:"Learning journeys",jP:"Five journeys ordered by your stage in the sector. Start yours and mark each step you complete.",jStart:"Start this journey",jStarted:"Your current journey",jFor:"Who is it for?",jDone:"Done",jMark:"Mark as done",jProgress:"Progress",
  pT:"Learning calendar",pP:"All sector training programs, grouped by status. Check deadlines and fees on each program's website.",
- st_all:"All programs",st_existing:"Ongoing programs",st_current:"Current programs",st_new:"New programs",st_future:"Upcoming programs",
- st_existing_d:"Always available",st_current_d:"Open for registration",st_new_d:"Recently added",st_future_d:"Coming soon",
+ st_all:"All programs",st_open:"Open now",st_soon:"Coming soon",st_closed:"Closed",
+ st_open_d:"Registration open",st_soon_d:"Opens soon",st_closed_d:"Registration closed",more:"More",
  fBtn:"Filters",fClear:"Clear filters",fShown:"{n} programs",masters:"Master's",bachelor:"Bachelor's",diploma:"Diploma",training:"Training program",scholarship:"Scholarship",onsite:"On campus",hybrid:"Hybrid",both:"Arabic & English",duration:"Duration",fee:"Fees",providers:"Organizations",hsProg:"Programs",hTry:"Try:",prT2:"Organizations",prP2:"Training centers, funders and universities that build the skills of nonprofit professionals and support their careers.",prTrain:"Training providers",prGrant:"Scholarship funders",prUni:"Universities and institutes in the guide",prN:"{n} programs",prSee:"See their programs",certificate:"Certificate",course:"Courses",fellowship:"Fellowship",directory:"Directory",award:"Award",academy:"Academy",all:"All",
  local:"Local",intl:"International",allScope:"Local & international",region:"Scope",
  type:"Type",mode:"Mode",lang:"Language",provider:"Provider",country:"Country",cost:"Cost",focus:"Focus",status:"Status",
@@ -577,11 +599,11 @@ en:{brand:"Bosla",tagline:"Your guide to the nonprofit sector",
  cmpT:"Program comparison",cmpEmpty:"Select two or three programs to compare.",cmpMax:"You can compare up to three programs",
  fieldsT:"Filter by field",f_waqf:"Endowments",f_csr:"Social responsibility",f_lead:"Leadership",f_gov:"Governance",f_dev:"Community development",f_fund:"Resource development",f_vol:"Volunteering",f_impact:"Impact measurement",
  rateIt:"Rate this program:",ratings:"ratings",noRatings:"No ratings yet",
- evT:"Events & dates",evForums:"Forums & exhibitions",evDays:"International days",evDaysP:"International days linked to the nonprofit sector, held on the same date every year.",evP:"Nonprofit sector forums and exhibitions. Follow an event to get a reminder before it starts.",
+ evT:"Events & forums",evForums:"Forums & exhibitions",evDays:"International days",evDaysP:"International days linked to the nonprofit sector, held on the same date every year.",evP:"Nonprofit sector forums and exhibitions. Follow an event to get a reminder before it starts.",
  ended:"Ended",upcoming:"Upcoming",daysLeft:"in {n} days",today:"Today",follow:"Follow",following:"Following",
  cmT:"Professional communities",cmP:"Three communities inside Bosla, plus external professional networks.",cm_beg:"Beginners community",cm_beg_d:"For newcomers: first questions, core concepts and first programs.",cm_exp:"Experts community",cm_exp_d:"For experienced professionals: sharing experience, mentoring and building sector knowledge.",cm_tech:"Technical specialties community",cm_tech_d:"For specialists in resource development, impact measurement, governance and volunteering.",
  joinC:"Join community",joined:"You're a member",members:"{n} members",extNets:"External professional networks",join:"Visit",
- ctT:"Learning content",ctP:"Podcasts, articles, studies and a nonprofit-sector glossary.",podcast:"Podcast",article:"Articles",study:"Study",open:"Open",
+ schT:"Scholarships",schP:"Scholarships and study-abroad programs for nonprofit professionals, and the organizations that fund them.",schProg:"Scholarships & study programs",schOrgs:"Organizations offering scholarships",searchOpen:"Open search",ctT:"Learning content",ctP:"Podcasts, articles, studies and a nonprofit-sector glossary.",podcast:"Podcast",article:"Articles",study:"Study",open:"Open",
  tplT:"Ready templates",copy:"Copy template",copied:"Template copied",copyFail:"Select the text and copy it manually",
  glT:"Nonprofit sector glossary",glSrc:"516 terms from the dictionary published by the King Salman Global Academy for Arabic Language with the National Center for Non-Profit Sector.",glMore:"Show all terms ({n})",glSearch:"Search a term in Arabic or English",
  elT:"E-learning platforms",elP:"Trusted platforms with courses in leadership, management and fundraising.",
@@ -662,6 +684,7 @@ const BASE=[
 {"id": "harvard-hbs-mba", "type": "masters", "region": "intl", "status": "current", "cost": "paid", "mode": "onsite", "lng": "english", "fields": ["f_lead"], "country": {"ar": "الولايات المتحدة الأمريكية", "en": "United States"}, "name": {"ar": "ماجستير إدارة الأعمال MBA جامعة هارفارد", "en": "Harvard Business School MBA"}, "provider": {"ar": "جامعة هارفارد - كلية هارفارد للأعمال", "en": "Harvard University - Harvard Business School"}, "focus": {"ar": "دراسة متخصصة في إدارة المنظمات غير الربحية وتطبيق مبادئ الإدارة الفعالة", "en": "MBA with study of nonprofit management challenges and effective management for social and environmental goals"}, "url": "https://www.hbs.edu/mba/", "src": "guide", "duration": {"ar": "عامان", "en": "2 years"}, "fee": {"ar": "74,910 دولار سنويًا (الرسوم الدراسية)", "en": "US$74,910 per year (tuition)"}},
 {"id": "harvard-hks-nonprofit-mgmt-leadership-online", "type": "training", "region": "intl", "status": "existing", "cost": "paid", "mode": "online", "lng": "english", "fields": ["f_lead"], "country": {"ar": "الولايات المتحدة الأمريكية", "en": "United States"}, "name": {"ar": "الإدارة والقيادة للمنظمات غير الربحية: استراتيجيات النجاح التنظيمي (أونلاين)", "en": "Nonprofit Management and Leadership: Strategies for Organizational Success (Online)"}, "provider": {"ar": "جامعة هارفارد - مدرسة هارفارد كينيدي (HKS)", "en": "Harvard Kennedy School Executive Education"}, "focus": {"ar": "تطوير مهارات مديري المنظمات غير الربحية في القيادة وإدارة الأزمات والاستدامة", "en": "Equips nonprofit managers with leadership, crisis and conflict management, and sustainability strategies"}, "url": "https://www.hks.harvard.edu/educational-programs/executive-education/nonprofit-management-and-leadership-online", "src": "guide", "duration": {"ar": "8 أسابيع", "en": "8 weeks"}, "fee": {"ar": "4,800 دولار أمريكي", "en": "US$4,800"}},
 {"id": "harvard-hks-nonprofit-financial-stewardship-onli", "type": "training", "region": "intl", "status": "existing", "cost": "paid", "mode": "online", "lng": "english", "fields": ["f_gov", "f_fund"], "country": {"ar": "الولايات المتحدة الأمريكية", "en": "United States"}, "name": {"ar": "الإشراف المالي غير الربحي: مفاهيم وتقنيات للإدارة الاستراتيجية (أونلاين)", "en": "Nonprofit Financial Stewardship: Concepts and Techniques for Strategic Management (Online)"}, "provider": {"ar": "جامعة هارفارد - مدرسة هارفارد كينيدي (HKS)", "en": "Harvard Kennedy School Executive Education"}, "focus": {"ar": "الإدارة المالية الاستراتيجية والتخطيط المالي طويل الأمد والامتثال للمنظمات غير الربحية", "en": "Strategic financial management, long-term planning and compliance for nonprofit executives"}, "url": "https://www.hks.harvard.edu/educational-programs/executive-education/nonprofit-financial-stewardship", "src": "guide", "duration": {"ar": "5 أسابيع", "en": "5 weeks"}, "fee": {"ar": "3,900 دولار أمريكي", "en": "US$3,900"}},
+{"id": "harvard-hks-strategic-fundraising-online", "type": "training", "region": "intl", "status": "existing", "cost": "paid", "mode": "online", "lng": "english", "fields": ["f_fund", "f_lead"], "country": {"ar": "الولايات المتحدة الأمريكية", "en": "United States"}, "name": {"ar": "استراتيجية جمع التبرعات للمنظمات غير الربحية (أونلاين)", "en": "Strategic Fundraising for Nonprofit Leaders (Online)"}, "provider": {"ar": "جامعة هارفارد - مدرسة هارفارد كينيدي (HKS)", "en": "Harvard Kennedy School Executive Education"}, "focus": {"ar": "استراتيجيات جمع التبرعات بفعالية وبناء علاقات طويلة الأمد مع المانحين", "en": "Effective fundraising strategies and long-term donor relationships"}, "url": "https://pll.harvard.edu/course/strategic-fundraising-nonprofit-leaders-online", "src": "guide", "duration": {"ar": "أسبوع واحد (نحو 20 ساعة مباشرة و15 ساعة عمل)", "en": "1 week (about 20 live hours + 15 hours of work)"}, "fee": {"ar": "4,800 دولار أمريكي", "en": "US$4,800"}},
 {"id": "stanford-gsb-mba", "type": "masters", "region": "intl", "status": "existing", "cost": "paid", "mode": "onsite", "lng": "english", "fields": ["f_lead"], "country": {"ar": "الولايات المتحدة الأمريكية", "en": "United States"}, "name": {"ar": "ماجستير إدارة الأعمال MBA جامعة ستانفورد", "en": "Stanford GSB MBA"}, "provider": {"ar": "جامعة ستانفورد - كلية ستانفورد للدراسات العليا في الأعمال", "en": "Stanford University - Graduate School of Business"}, "focus": {"ar": "الإدارة العامة مع تركيز على تحديات المنظمات غير الربحية والقيادة والابتكار", "en": "Management study focused on nonprofit challenges, leadership, analysis and innovation"}, "url": "https://www.gsb.stanford.edu/programs/mba", "src": "guide", "duration": {"ar": "عامان", "en": "2 years"}, "fee": {"ar": "79,860 دولار أمريكي (رسوم التقديم 275 دولارًا)", "en": "US$79,860 (application fee US$275)"}},
 {"id": "stanford-gsb-epnl", "type": "training", "region": "intl", "status": "current", "cost": "paid", "mode": "onsite", "lng": "english", "fields": ["f_lead"], "country": {"ar": "الولايات المتحدة الأمريكية", "en": "United States"}, "name": {"ar": "البرنامج التنفيذي لقادة المنظمات غير الربحية", "en": "Executive Program for Nonprofit Leaders"}, "provider": {"ar": "جامعة ستانفورد - كلية ستانفورد للدراسات العليا في الأعمال", "en": "Stanford Graduate School of Business Executive Education"}, "focus": {"ar": "تطوير قادة المؤسسات غير الربحية مهنيًا وبناء شبكة علاقات دائمة", "en": "Professional development and lasting network for nonprofit leaders; Stanford GSB certificate"}, "url": "https://www.gsb.stanford.edu/exec-ed/programs/executive-program-nonprofit-leaders", "src": "guide", "duration": {"ar": "أسبوع", "en": "1 week"}, "fee": {"ar": "19,200 دولار أمريكي (شاملة الرسوم والإقامة والوجبات)", "en": "US$19,200 (incl. tuition, lodging, meals)"}},
 {"id": "iu-oneill-nonprofit-mgmt-leadership-major", "type": "bachelor", "region": "intl", "status": "existing", "cost": "paid", "mode": "onsite", "lng": "english", "fields": ["f_lead"], "country": {"ar": "الولايات المتحدة الأمريكية", "en": "United States"}, "name": {"ar": "تخصص إدارة المنظمات غير الربحية والقيادة (بكالوريوس)", "en": "Nonprofit Management and Leadership major (B.S.P.A.)"}, "provider": {"ar": "جامعة إنديانا - كلية بول أونيل للشؤون العامة والبيئية", "en": "Indiana University - Paul H. O'Neill School of Public and Environmental Affairs"}, "focus": {"ar": "إعداد المختصين في إدارة المنظمات غير الربحية وقيادتها", "en": "Prepares students to manage and lead nonprofit organizations"}, "url": "https://academics.iu.edu/degrees/bloomington/bachelor-of-science-in-public-affairs/nonprofit-management-and-leadership.html", "src": "guide", "duration": {"ar": "عامان", "en": "2 years"}, "fee": {"ar": "67,392 دولار أمريكي + 4,362 دولار تكاليف غير مباشرة", "en": "US$67,392 + US$4,362 indirect costs"}},
@@ -700,7 +723,10 @@ const BASE=[
   focus:{ar:"بحث ومقارنة برامج من جامعات حول العالم",en:"Search and compare programs worldwide"},url:"https://www.mastersportal.com/studies/438751/nonprofit-management-and-leadership-international-nongovernmental-organizations.html"}
 ];
 const FIELDS=["f_waqf","f_csr","f_lead","f_gov","f_dev","f_fund","f_vol","f_impact"];
-const STATUSES=["existing","current","new","future"];
+const STATUSES=["open","soon","closed"];
+const normSt=x=>({current:"open",existing:"open",open:"open",new:"soon",future:"soon",soon:"soon",closed:"closed"})[x]||"open";
+const TYPE_ORDER=["fellowship","masters","diploma","bachelor","certificate","training","course","scholarship","academy","award","directory"];
+const typeRank=t=>{const i=TYPE_ORDER.indexOf(t);return i<0?99:i};
 
 const EVENTS=[
  {id:"ev-future5",date:"2026-11-02",name:{ar:"ملتقى مستقبل القطاع غير الربحي (النسخة الخامسة)",en:"Future of the Nonprofit Sector Forum (5th edition)"},
@@ -741,7 +767,11 @@ const CONTENT=[
  {id:"ssir",kind:"article",name:{ar:"مجلة ستانفورد للابتكار الاجتماعي",en:"Stanford Social Innovation Review"},by:{ar:"جامعة ستانفورد",en:"Stanford University"},desc:{ar:"مقالات وأبحاث عالمية في الابتكار الاجتماعي والعطاء وقياس الأثر (بالإنجليزية).",en:"Global articles and research on social innovation, philanthropy and impact measurement."},url:"https://ssir.org"},
  {id:"candid",kind:"article",name:{ar:"مكتبة Candid للتعلم",en:"Candid Learning"},by:{ar:"Candid",en:"Candid"},desc:{ar:"أدلة ومقالات ودورات مجانية في جمع التبرعات وكتابة المقترحات (بالإنجليزية).",en:"Free guides, articles and courses on fundraising and proposal writing."},url:"https://learning.candid.org"},
  {id:"ncss",kind:"study",name:{ar:"مجلة البحوث والدراسات الاجتماعية",en:"Journal of Social Research and Studies"},by:{ar:"المركز الوطني للدراسات والبحوث الاجتماعية",en:"National Center for Social Studies"},desc:{ar:"دراسات محكّمة عن القطاع غير الربحي والتنمية الاجتماعية في المملكة.",en:"Peer-reviewed studies on the nonprofit sector and social development in Saudi Arabia."},url:"https://ncss.gov.sa"},
- {"id": "pod-0", "kind": "podcast", "name": {"ar": "بودكاست مثلث", "en": "Triangle Podcast (Muthallath)"}, "by": {"ar": "بودكاست صوتي", "en": "Audio podcast"}, "desc": {"ar": "يعرض تجارب ومنهجيات القطاع غير الربحي في الاستدامة المالية مع ضيوف متخصصين.", "en": "Nonprofit financial-sustainability experiences and methods with expert guests."}, "url": "https://podcasts.apple.com/us/podcast/id1606891051"}
+ {"id": "pod-0", "kind": "podcast", "name": {"ar": "بودكاست مثلث", "en": "Triangle Podcast (Muthallath)"}, "by": {"ar": "بودكاست صوتي", "en": "Audio podcast"}, "desc": {"ar": "يعرض تجارب ومنهجيات القطاع غير الربحي في الاستدامة المالية مع ضيوف متخصصين.", "en": "Nonprofit financial-sustainability experiences and methods with expert guests."}, "url": "https://podcasts.apple.com/us/podcast/id1606891051"},
+ {"id": "pod-hekaya", "kind": "podcast", "name": {"ar": "بودكاست حكاية القطاع", "en": "Hekayat Al-Qetaa Podcast"}, "by": {"ar": "البنك الثالث", "en": "Third Bank (3bank)"}, "desc": {"ar": "مدونة صوتية من مبادرات البنك الثالث تروي حكاية القطاع غير الربحي في المملكة بصوت العاملين فيه.", "en": "An audio series from 3bank telling the story of Saudi Arabia's nonprofit sector in its workers' own voices."}, "url": "https://x.com/3bankPodcast"},
+ {"id": "pod-sabr", "kind": "podcast", "name": {"ar": "بودكاست سبر", "en": "Sabr Podcast"}, "by": {"ar": "بودكاست مرئي", "en": "Video podcast"}, "desc": {"ar": "يهتم بتجربة القطاع غير الربحي في المملكة، ويسلط الضوء على قصصه وممارساته وتطوراته.", "en": "Explores the Saudi nonprofit sector's experience, stories, practices and developments."}, "url": "https://www.youtube.com/results?search_query=%D8%A8%D9%88%D8%AF%D9%83%D8%A7%D8%B3%D8%AA+%D8%B3%D8%A8%D8%B1"},
+ {"id": "pod-waraqat", "kind": "podcast", "name": {"ar": "بودكاست ورقات", "en": "Waraqat Podcast"}, "by": {"ar": "بودكاست مرئي", "en": "Video podcast"}, "desc": {"ar": "حكايات وتجارب ملهمة من رواة ينقلون خبراتهم بأسلوب شيق ومفيد في القطاع غير الربحي.", "en": "Inspiring stories and experiences from nonprofit practitioners, shared in an engaging way."}, "url": "https://www.youtube.com/results?search_query=%D8%A8%D9%88%D8%AF%D9%83%D8%A7%D8%B3%D8%AA+%D9%88%D8%B1%D9%82%D8%A7%D8%AA"},
+ {"id": "pod-rabeh", "kind": "podcast", "lg": "thestage.sa", "name": {"ar": "مجتمع القطاع الرابح", "en": "Al-Qetaa Al-Rabeh Community"}, "by": {"ar": "ذا ستيج بالشراكة مع المركز الوطني لتنمية القطاع غير الربحي", "en": "The Stage with the National Center for Non-Profit Sector"}, "desc": {"ar": "مجتمع يلتقي فيه المهتمون بالقطاع غير الربحي لمناقشة دوره تجاه المنظمات وتفعيله ضمن المجالات التنموية.", "en": "A community where people interested in the nonprofit sector discuss its role and development fields."}, "url": "https://thestage.sa/event/%D8%A7%D9%84%D9%82%D8%B7%D8%A7%D8%B9-%D8%A7%D9%84%D8%B1%D8%A7%D8%A8%D8%AD/"}
 ];
 
 const NETWORKS=[
@@ -836,7 +866,7 @@ en:[
 const POINTS={ready:30,step:15,rate:10,profile:20,follow:10,review:50,need:10};
 const S={answers:{},lang:"ar",tab:"home",status:"all",filter:"all",region:"all",fields:[],cmp:[],q:"",openJ:null,advice:null,advBusy:false};
 const R={db:null,user:null,uid:null,owner:false,sample:null,downloads:null,list:null,rating:0,board:null,names:{},prefs:{},prefsRef:null,ratings:[],members:[],needs:[],extra:[]};
-const TABS=["home","journeys","programs","providers","calendar","communities","elearn","grants","funders","orgs","content","account"];
+const TABS=["home","programs","calendar","communities","elearn","providers","scholar","journeys","grants","funders","orgs","content","account"];
 const t=(k,v)=>{let s=T[S.lang][k]??T.ar[k]??k;if(v)for(const x in v)s=s.replace("{"+x+"}",v[x]);return s};
 const L=o=>o==null?"":typeof o==="string"?o:(o[S.lang]||o.ar||"");
 const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -852,7 +882,7 @@ const isPast=e=>daysTo(e.end||e.date)<0;
 const fmtD=(s,o)=>dOf(s).toLocaleDateString(S.lang==="ar"?"ar-SA-u-ca-gregory-nu-latn":"en-GB",o||{day:"numeric",month:"long",year:"numeric"});
 
 /* catalog = static + admin additions */
-function programs(){return [...BASE,...R.extra.map(x=>({id:x.id,type:x.type||"course",region:x.region||"local",status:x.status||"new",cost:x.cost||"check",mode:x.mode||"check",lng:x.lng||"arabic",fields:Array.isArray(x.fields)?x.fields:[],country:{ar:x.country||"",en:x.country||""},name:{ar:x.name,en:x.name_en||x.name},provider:{ar:x.provider||"",en:x.provider||""},focus:{ar:x.desc||"",en:x.desc||""},url:x.url,start:x.start||""}))]}
+function programs(){return [...BASE.map(p=>({...p,status:normSt(p.status)})),...R.extra.map(x=>({id:x.id,added:true,type:x.type||"course",region:x.region||"local",status:normSt(x.status||"new"),cost:x.cost||"check",mode:x.mode||"check",lng:x.lng||"arabic",fields:Array.isArray(x.fields)?x.fields:[],country:{ar:x.country||"",en:x.country||""},name:{ar:x.name,en:x.name_en||x.name},provider:{ar:x.provider||"",en:x.provider||""},focus:{ar:x.desc||"",en:x.desc||""},url:x.url,start:x.start||""}))]}
 function resolve(ref){const [k,id]=ref.split(":");
  if(k==="P"){const p=programs().find(x=>x.id===id);return p&&{id:ref,name:p.name,sub:p.provider,url:p.url}}
  if(k==="L"){const p=PLATFORMS.find(x=>x.id===id);return p&&{id:ref,name:p.name,sub:{ar:"منصة تعلم عن بعد",en:"E-learning platform"},url:p.url}}
@@ -889,7 +919,7 @@ function programCard(p){
  const rt=ratingOf(p.id),mine=myRating(p.id);
  const canApply=p.type!=="directory";
  return `<article class="card" style="--accent-top:${({masters:"#0F3557",bachelor:"#0F3557",diploma:"#2F7D8C",certificate:"#5E8B6E",course:"#BA6740",training:"#BA6740",fellowship:"#A86A12",scholarship:"#7A5C9E",academy:"#2F7D8C",award:"#7A5C9E"})[p.type]||"var(--line)"}">
-  <div class="tags"><span class="tag">${t(p.type)}</span><span class="tag ${p.region==="local"?"cu":""}">${t(p.region)}</span>${p.status!=="existing"?`<span class="tag soonT">${t("st_"+p.status)}</span>`:""}${p.cost==="free"?`<span class="tag ok">${t("free")}</span>`:""}${p.fields.slice(0,2).map(f=>`<span class="tag" style="background:var(--sage-soft);color:var(--sage)">${t(f)}</span>`).join("")}</div>
+  <div class="tags"><span class="tag">${t(p.type)}</span><span class="tag ${p.region==="local"?"cu":""}">${t(p.region)}</span><span class="tag ${({open:"ok",soon:"soonT",closed:"end"})[p.status]||""}">${t("st_"+p.status)}</span>${p.cost==="free"?`<span class="tag ok">${t("free")}</span>`:""}${p.fields.slice(0,2).map(f=>`<span class="tag" style="background:var(--sage-soft);color:var(--sage)">${t(f)}</span>`).join("")}</div>
   <div class="phead">${logo(p.url,p.provider)}<div><h3>${esc(L(p.name))}</h3>
   <p>${esc(L(p.provider))}${L(p.country)?"، "+esc(L(p.country)):""}</p></div></div>
   <p>${esc(L(p.focus))}</p>
@@ -915,26 +945,25 @@ function comparison(){
 /* ---------- views ---------- */
 function home(){
  const up=EVENTS.filter(e=>!isPast(e)).sort((a,b)=>a.date.localeCompare(b.date)).slice(0,2);
- const rank=p=>({current:0,new:1,future:2,existing:3}[p.status]??4)+(p.region==="local"?0:0.5);
- const latest=programs().filter(p=>p.type!=="directory").sort((a,b)=>rank(a)-rank(b)).slice(0,6);
+ const rank=p=>({open:0,soon:1,closed:3}[p.status]??4)*10+(p.added?0:2)+(p.region==="local"?0:1)+typeRank(p.type)/100;
+ const pool=programs().filter(p=>p.type!=="directory"&&p.status!=="closed").sort((a,b)=>rank(a)-rank(b));
+ const latest=[...pool.filter(p=>p.added).reverse(),...["fellowship","masters","diploma"].map(k=>pool.find(p=>p.type===k)).filter(Boolean)].slice(0,3);
  const board=(R.board||[]).filter(b=>(b.points||0)>0);
  const showVoices=(R.list&&R.list.length>0)||R.owner;
  const nx=up[0];const all=programs().filter(p=>p.type!=="directory");
  const TC=["#BA6740","#5E8B6E","#0F3557","#A86A12","#7A5C9E","#2F7D8C","#B23A32","#5E8B6E"];
- return `<section class="hero3"><div class="h3text"><h1>${t("heroT")}</h1><p>${t("heroP")}</p>
-  <form class="sform" id="heroSearch" role="search"><input id="heroQ" type="search" placeholder="${t("searchPh")}" aria-label="${t("searchPh")}"><button class="btn" type="submit">${t("searchBtn")}</button></form>
+ return `<section class="hero3"><div class="h3text"><h1>${t("heroT")}</h1>
+  <div class="hlatest"><h2>${t("latestT")}</h2><ol>${latest.map(p=>`<li><button type="button" data-prov="${esc(L(p.name))}"><span class="nm">${esc(L(p.name))}</span><span class="sb">${esc(L(p.provider))}</span><span class="tag ${({open:"ok",soon:"soonT",closed:"end"})[p.status]||""}">${t("st_"+p.status)}</span></button></li>`).join("")}</ol><button class="hmore" type="button" data-go="programs">${t("more")} <span aria-hidden="true">${S.lang==="ar"?"←":"→"}</span></button></div>
   <div class="chips2"><span>${t("hTry")}</span>${["f_fund","f_lead","f_vol","f_impact","f_gov"].map(f=>`<button type="button" data-topic="${f}">${t(f)}</button>`).join("")}</div>
   <dl class="hstats">${[[all.length,t("hsProg"),"programs",""],[all.filter(p=>p.region==="local").length,t("local"),"programs","local"],[all.filter(p=>p.region==="intl").length,t("intl"),"programs","intl"],[PROVIDERS.length,t("providers"),"providers",""]].map(([n,l,tab,r])=>`<button type="button" data-tab="${tab}" ${r?`data-region="${r}"`:""}><dt>${n}</dt><dd>${l}</dd></button>`).join("")}</dl></div>
   <svg class="rose" viewBox="0 0 400 400" aria-hidden="true"><g fill="none" stroke="currentColor"><circle cx="200" cy="200" r="190" stroke-width="1"/><circle cx="200" cy="200" r="150" stroke-width=".75"/><circle cx="200" cy="200" r="70" stroke-width=".75"/>${Array.from({length:72},(_,i)=>{const a=i*5*Math.PI/180,r1=190,r2=i%18===0?168:i%6===0?178:184;return `<line x1="${200+r1*Math.sin(a)}" y1="${200-r1*Math.cos(a)}" x2="${200+r2*Math.sin(a)}" y2="${200-r2*Math.cos(a)}" stroke-width="${i%18===0?1.5:.75}"/>`}).join("")}<path d="M200 50 L222 200 L200 350 L178 200Z M50 200 L200 222 L350 200 L200 178Z" stroke-width=".75"/><path d="M94 94 L208 192 L306 306 L192 208Z M306 94 L208 208 L94 306 L192 192Z" stroke-width=".5" opacity=".6"/></g><g class="needle"><path d="M200 70 L214 200 L186 200Z" fill="#B4613B"/><path d="M200 330 L214 200 L186 200Z" fill="#0E2A44"/><circle cx="200" cy="200" r="7" fill="#fff" stroke="#0E2A44" stroke-width="2"/></g><g font-family="IBM Plex Sans,sans-serif" font-size="15" font-weight="600" fill="currentColor" text-anchor="middle"><text x="200" y="36">N</text><text x="200" y="378">S</text><text x="372" y="205">E</text><text x="28" y="205">W</text></g></svg></section>
  <section class="section"><h2>${t("topicsT")}</h2><div class="topics">${FIELDS.map((f,i)=>{const n=all.filter(p=>p.fields.includes(f)).length;return n?`<button class="topic" type="button" data-topic="${f}" style="--tc:${TC[i%TC.length]}"><b>${t(f)}</b><span>${t("topicN",{n})}</span></button>`:""}).join("")}</div></section>
  ${canSee("journeys")?`<section class="section"><h2>${t("journeys")} <small class="tag">${t("hiddenTag")}</small></h2><p class="lead">${t("jP")}</p>${journeyCards()}</section>`:""}
- <section class="section"><div class="vhead" style="margin-bottom:10px"><h2>${t("latestT")}</h2><button class="btn line" data-go="programs" style="font-size:13px;padding:5px 14px">${t("allPrograms")}</button></div>
-  <div class="grid">${latest.map(programCard).join("")}</div></section>
  ${up.length?`<section class="section"><div class="vhead" style="margin-bottom:10px"><h2>${t("evT")}</h2><button class="btn line" data-go="calendar" style="font-size:13px;padding:5px 14px">${t("calendar")}</button></div><div class="grid">${up.map(eventCard).join("")}</div></section>`:""}
- <section class="section"><h2>${t("forWhom")}</h2><div class="simple">${[["fw_w","account"],["fw_f","funders"],["fw_o","orgs"],["fw_e","programs"]].filter(([k,g])=>canSee(g)).map(([k,g])=>`<button class="card" data-go="${g}" style="text-align:start;font:inherit;color:inherit;cursor:pointer"><h3>${t(k)}</h3><p>${t(k+"p")}</p></button>`).join("")}</div></section>
  <section class="section"><h2>${t("gpT")}</h2><p class="lead">${t("gpP")}</p><div class="steps">${STEPS[S.lang].map(s=>`<div class="step"><h3>${s[0]}</h3><p>${s[1]}</p></div>`).join("")}</div></section>
  ${showVoices?`<section class="section voices" id="voices">${voicesHTML()}</section>`:""}
- ${board.length>=3||R.owner?`<section class="section two-col"><div><h2>${t("lbT")}</h2><p class="lead">${t("lbP")}</p><div id="boardBox">${boardHTML(5)}</div></div><div style="padding-top:6px">${earnHTML()}</div></section>`:""}`;
+ ${board.length>=3||R.owner?`<section class="section two-col"><div><h2>${t("lbT")}</h2><p class="lead">${t("lbP")}</p><div id="boardBox">${boardHTML(5)}</div></div><div style="padding-top:6px">${earnHTML()}</div></section>`:""}
+ <section class="section"><h2>${t("forWhom")}</h2><div class="simple">${[["fw_w","account"],["fw_f","funders"],["fw_o","orgs"],["fw_e","programs"]].filter(([k,g])=>canSee(g)).map(([k,g])=>`<button class="card" data-go="${g}" style="text-align:start;font:inherit;color:inherit;cursor:pointer"><h3>${t(k)}</h3><p>${t(k+"p")}</p></button>`).join("")}</div></section>`;
 }
 function journeyCards(){
  return `<div class="jgrid">${JOURNEYS.map(j=>{const pct=jPct(j);const started=(R.prefs.journeys||{})[j.id];
@@ -954,11 +983,11 @@ function journeysView(){return `<h2>${t("jT")}</h2><p class="lead">${t("jP")}</p
 
 function programsView(){
  const all=programs();
- const types=["all","masters","bachelor","diploma","fellowship","certificate","training","course","scholarship","academy","award","directory"].filter(k=>k==="all"||all.some(p=>p.type===k));
+ const types=["all",...TYPE_ORDER].filter(k=>k==="all"||all.some(p=>p.type===k));
  const cnt=s=>s==="all"?all.length:all.filter(p=>p.status===s).length;
- const nAct=(S.filter!=="all")+(S.region!=="all")+S.fields.length;const qq=(S.pq||"").trim().toLowerCase();const list=all.filter(p=>(!qq||[L(p.name),L(p.provider),L(p.focus),p.name.en||"",p.provider.en||""].join(" ").toLowerCase().includes(qq))&&(S.status==="all"||p.status===S.status)&&(S.filter==="all"||p.type===S.filter)&&(S.region==="all"||p.region===S.region)&&(!S.fields.length||S.fields.some(f=>p.fields.includes(f))));
+ const nAct=(S.filter!=="all")+(S.region!=="all")+S.fields.length;const qq=(S.pq||"").trim().toLowerCase();const list=all.filter(p=>(!qq||[L(p.name),L(p.provider),L(p.focus),p.name.en||"",p.provider.en||""].join(" ").toLowerCase().includes(qq))&&(S.status==="all"||p.status===S.status)&&(S.filter==="all"||p.type===S.filter)&&(S.region==="all"||p.region===S.region)&&(!S.fields.length||S.fields.some(f=>p.fields.includes(f)))).sort((a,b)=>typeRank(a.type)-typeRank(b.type));
  return `${comparison()}<h2>${t("pT")}</h2><p class="lead">${t("pP")}</p><div class="qbar"><input id="pq" type="search" value="${esc(S.pq||"")}" placeholder="${t("searchPh")}" aria-label="${t("searchPh")}">${qq?`<span class="note" style="margin:0">${t("resultsFor",{q:esc(S.pq)})} · ${list.length}</span>`:""}</div>
-  <div class="statusbar">${["all",...STATUSES].filter(s=>s==="all"||cnt(s)>0||S.status===s).map(s=>`<button class="sbtn" type="button" data-status="${s}" aria-pressed="${S.status===s}"><b>${cnt(s)}</b>${t("st_"+s)}${s!=="all"?`<span style="display:block">${t("st_"+s+"_d")}</span>`:""}</button>`).join("")}</div>
+  <div class="statusbar">${["all",...STATUSES].map(s=>`<button class="sbtn" type="button" data-status="${s}" aria-pressed="${S.status===s}"><b>${cnt(s)}</b>${t("st_"+s)}${s!=="all"?`<span style="display:block">${t("st_"+s+"_d")}</span>`:""}</button>`).join("")}</div>
   <div class="ftool"><button type="button" class="btn line" id="fToggle" aria-expanded="${!!S.fOpen}"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg>${t("fBtn")}${nAct?` <span class="fcount">${nAct}</span>`:""}</button>${nAct?`<button type="button" class="link" id="fClear" style="background:none;border:0;cursor:pointer;font:inherit">${t("fClear")}</button>`:""}<span class="note" style="margin:0">${t("fShown",{n:list.length})}</span></div>
   <div class="fpanel" ${S.fOpen?"":"hidden"}><div class="row2">${["all","local","intl"].map(k=>`<button class="chip" data-region="${k}" aria-pressed="${S.region===k}">${t(k==="all"?"allScope":k)}</button>`).join("")}<span class="sep"></span>
   ${types.map(k=>`<button class="chip" data-filter="${k}" aria-pressed="${S.filter===k}">${t(k)}</button>`).join("")}</div>
@@ -970,7 +999,7 @@ function suggestPanel(){
  const L2=R.suggest||[];
  return `<div class="panel admin" style="margin-top:22px" id="sgPanel"><h3>${t("sgT")} <span class="tag soonT">${L2.length}</span></h3><p class="note" style="margin-top:4px">${t("sgP")}</p>
   ${L2.length?L2.map(s=>`<div class="titem" style="background:var(--bg)"><div class="nm"><a class="link" href="${esc(s.url)}" target="_blank" rel="noopener" style="color:var(--navy)">${esc(s.name)}</a>
-   <small>${esc(s.provider||"")} · ${t("st_"+(s.status||"new"))}${s.start?" · "+esc(s.start):""} · ${t("sgSrc")}: ${esc(s.source||"")}</small>${s.desc?`<small>${esc(s.desc)}</small>`:""}</div>
+   <small>${esc(s.provider||"")} · ${t("st_"+normSt(s.status||"new"))}${s.start?" · "+esc(s.start):""} · ${t("sgSrc")}: ${esc(s.source||"")}</small>${s.desc?`<small>${esc(s.desc)}</small>`:""}</div>
    <div style="display:flex;gap:6px"><button class="done-btn" type="button" data-sg="${s.id}" data-act="ok" style="background:var(--sage);color:#fff;border-color:var(--sage)">${t("sgOk")}</button><button class="done-btn" type="button" data-sg="${s.id}" data-act="no">${t("sgNo")}</button></div></div>`).join(""):`<p class="note">${t("sgNone")}</p>`}</div>`;
 }
 async function reviewSuggestion(id,act){
@@ -1017,7 +1046,7 @@ const glossItems=all=>{if(!all.length)return `<p>${t("noMatch")}</p>`;const q=S.
 const AR_N=x=>String(x).replace(/[\u064B-\u0652\u0640]/g,"").replace(/[أإآ]/g,"ا").replace(/ى/g,"ي").replace(/ة/g,"ه");
 const glossFilter=()=>{const q=AR_N(S.q.trim().toLowerCase());return GLOSS.filter(g=>!q||AR_N(g[0]).includes(q)||g[1].toLowerCase().includes(q)||AR_N(g[2]).includes(q))};
 function contentView(){
- return `<h2>${t("ctT")}</h2><p class="lead">${t("ctP")}</p><div class="grid">${CONTENT.map(c=>`<article class="card"><div class="chead">${logo(c.url,c.by&&L(c.by)!=="بودكاست صوتي"?c.by:c.name,c.lg)}
+ return `<h2>${t("ctT")}</h2><p class="lead">${t("ctP")}</p><div class="grid">${[...CONTENT].sort((a,b)=>["podcast","article","study"].indexOf(a.kind)-["podcast","article","study"].indexOf(b.kind)).map(c=>`<article class="card"><div class="chead">${logo(c.url,c.by&&!["بودكاست صوتي","بودكاست مرئي"].includes(L(c.by))?c.by:c.name,c.lg)}
   <div style="min-width:0"><div class="tags"><span class="tag">${t(c.kind)}</span></div><h3 style="margin-top:6px">${esc(L(c.name))}</h3><p>${esc(L(c.by))}</p></div></div>
   <p>${esc(L(c.desc))}</p><div class="cardfoot"><a class="link" href="${c.url}" target="_blank" rel="noopener">${t("open")} ${arrow()}</a></div></article>`).join("")}</div>
  <h3 class="sub">${t("glT")}</h3><p class="note" style="margin-top:4px">${t("glSrc")} <a class="link" href="https://siwar.ksaa.gov.sa/public-dict-information/2885a7fb-c347-4390-92c9-808c9b9b17c2" target="_blank" rel="noopener">${t("open")}</a></p><input class="search" id="glq" type="search" placeholder="${t("glSearch")}" value="${esc(S.q)}" aria-label="${t("glSearch")}"><div class="gloss" id="glList">${glossItems(glossFilter())}</div>`;
@@ -1032,6 +1061,13 @@ function providersView(){
   <h3 class="sub">${t("prTrain")}</h3><div class="grid">${grp("training").map(card).join("")}</div>
   <h3 class="sub">${t("prGrant")}</h3><div class="grid">${grp("grant").map(card).join("")}</div>
   <h3 class="sub">${t("prUni")}</h3><div class="grid">${ul.map(([k,v])=>`<article class="card"><div class="phead">${logo(v.u,k)}<div><h3>${esc(k)}</h3><p class="sm">${esc(v.c||"")}</p></div></div><div class="cardfoot"><span class="note" style="margin:0">${t("prN",{n:v.n})}</span><button class="link" type="button" data-prov="${esc(k)}" style="background:none;border:0;cursor:pointer;font:inherit">${t("prSee")} ${arrow()}</button></div></article>`).join("")}</div>`;
+}
+function scholarView(){
+ const ps=programs().filter(p=>p.type==="scholarship");
+ const orgs=PROVIDERS.filter(e=>e.kind==="grant");
+ return `<h2>${t("schT")}</h2><p class="lead">${t("schP")}</p>
+  <h3 class="sub">${t("schProg")}</h3><div class="grid">${ps.map(programCard).join("")}</div>
+  <h3 class="sub">${t("schOrgs")}</h3><div class="grid">${orgs.map(e=>`<article class="card"><div class="phead">${logo(e.url,e.name)}<div><h3>${esc(L(e.name))}</h3>${e.city?`<p class="sm">${esc(L(e.city))}</p>`:""}</div></div><p>${esc(L(e.desc))}</p><div class="cardfoot"><a class="link" href="${esc(e.url)}" target="_blank" rel="noopener">${t("visit")} ${arrow()}</a></div></article>`).join("")}</div>`;
 }
 function elearnView(){
  return `<h2>${t("elT")}</h2><p class="lead">${t("elP")}</p><div class="grid">${PLATFORMS.map(c=>`<article class="card"><div class="phead">${logo(c.url,c.name)}<div><h3>${esc(L(c.name))}</h3><p class="sm">${t(c.lng)}</p></div></div>
@@ -1180,7 +1216,7 @@ function bellHTML(){const A=alerts();return `<h3>${t("nT")}</h3>${A.length?A.map
 /* ---------- render ---------- */
 const HIDDEN=["journeys","funders","grants","orgs"];
 const canSee=k=>R.owner||!HIDDEN.includes(k);
-const VIEWS={grants,readiness,providers:providersView,home,journeys:journeysView,programs:programsView,calendar:calendarView,communities:communitiesView,content:contentView,elearn:elearnView,funders:fundersView,orgs:orgsView,account:accountView};
+const VIEWS={grants,readiness,providers:providersView,home,journeys:journeysView,programs:programsView,calendar:calendarView,communities:communitiesView,content:contentView,elearn:elearnView,scholar:scholarView,funders:fundersView,orgs:orgsView,account:accountView};
 function render(){
  const app=$("app");app.dir=S.lang==="ar"?"rtl":"ltr";app.lang=S.lang;document.documentElement.lang=S.lang;
  document.querySelectorAll("[data-t]").forEach(e=>e.textContent=t(e.dataset.t));
@@ -1191,6 +1227,7 @@ function render(){
  const y=window.scrollY;$("view").innerHTML=VIEWS[S.tab]();
  $("tray").hidden=S.tab!=="programs"||S.cmp.length===0;
  $("trayText").textContent=`${S.cmp.length} ${t("compareN")}`;$("clearCmp").textContent=t("clear");$("goCmp").textContent=t("compareGo");
+ $("heroQ").placeholder=t("searchPh");$("heroQ").setAttribute("aria-label",t("searchPh"));$("heroGo").textContent=t("searchBtn");$("fabBtn").setAttribute("aria-label",t("searchOpen"));
  updateBell();renderBnav();return y;
 }
 function rerender(){const y=window.scrollY;render();window.scrollTo({top:y})}
@@ -1299,7 +1336,10 @@ async function downloadCV(){
 
 document.addEventListener("click",e=>{const b=e.target.closest("[data-type]");if(!b)return;S.pq="";S.status="all";S.filter=b.dataset.type;S.region="all";S.fields=[];go("programs")});
 document.addEventListener("click",e=>{const b=e.target.closest("[data-topic]");if(!b)return;S.pq="";S.status="all";S.filter="all";S.region="all";S.fields=[b.dataset.topic];go("programs")});
-document.addEventListener("submit",e=>{if(e.target.id!=="heroSearch")return;e.preventDefault();S.pq=($("heroQ").value||"").trim();S.status="all";S.filter="all";S.region="all";S.fields=[];go("programs")});
+const fabSet=o=>{$("heroSearch").hidden=!o;$("fabBtn").setAttribute("aria-expanded",o);if(o)$("heroQ").focus()};
+document.addEventListener("click",e=>{if(e.target.closest("#fabBtn")){fabSet($("heroSearch").hidden);return}if(!e.target.closest("#fab"))fabSet(false)});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("heroSearch").hidden)fabSet(false)});
+document.addEventListener("submit",e=>{if(e.target.id!=="heroSearch")return;e.preventDefault();fabSet(false);S.pq=($("heroQ").value||"").trim();S.status="all";S.filter="all";S.region="all";S.fields=[];go("programs")});
 document.addEventListener("input",e=>{if(e.target.id!=="pq")return;S.pq=e.target.value;const pos=e.target.selectionStart;rerender();const el=$("pq");if(el){el.focus();try{el.setSelectionRange(pos,pos)}catch(_){}}});
 /* ---------- boot ---------- */
 try{const l=localStorage.getItem("bosla-lang");if(l==="en"||l==="ar")S.lang=l}catch(e){}
