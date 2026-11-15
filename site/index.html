@@ -836,7 +836,7 @@ en:[
 const POINTS={ready:30,step:15,rate:10,profile:20,follow:10,review:50,need:10};
 const S={answers:{},lang:"ar",tab:"home",status:"all",filter:"all",region:"all",fields:[],cmp:[],q:"",openJ:null,advice:null,advBusy:false};
 const R={db:null,user:null,uid:null,owner:false,sample:null,downloads:null,list:null,rating:0,board:null,names:{},prefs:{},prefsRef:null,ratings:[],members:[],needs:[],extra:[]};
-const TABS=["home","journeys","programs","providers","calendar","communities","content","elearn","grants","funders","orgs","account"];
+const TABS=["home","journeys","programs","providers","calendar","communities","elearn","grants","funders","orgs","content","account"];
 const t=(k,v)=>{let s=T[S.lang][k]??T.ar[k]??k;if(v)for(const x in v)s=s.replace("{"+x+"}",v[x]);return s};
 const L=o=>o==null?"":typeof o==="string"?o:(o[S.lang]||o.ar||"");
 const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
