@@ -947,7 +947,7 @@ function home(){
  const up=EVENTS.filter(e=>!isPast(e)).sort((a,b)=>a.date.localeCompare(b.date)).slice(0,2);
  const rank=p=>({open:0,soon:1,closed:3}[p.status]??4)*10+(p.added?0:2)+(p.region==="local"?0:1)+typeRank(p.type)/100;
  const pool=programs().filter(p=>p.type!=="directory"&&p.status!=="closed").sort((a,b)=>rank(a)-rank(b));
- const latest=[...pool.filter(p=>p.added).reverse(),...["fellowship","masters","diploma"].map(k=>pool.find(p=>p.type===k)).filter(Boolean)].slice(0,3);
+ const latest=pool.filter(p=>p.region==="local"&&p.status==="open").sort((a,b)=>(b.added?1:0)-(a.added?1:0)).slice(0,3);
  const board=(R.board||[]).filter(b=>(b.points||0)>0);
  const showVoices=(R.list&&R.list.length>0)||R.owner;
  const nx=up[0];const all=programs().filter(p=>p.type!=="directory");
