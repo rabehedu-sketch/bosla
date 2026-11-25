@@ -27,7 +27,7 @@ head = '''<!doctype html>
 <meta name="description" content="بوصلة: المرجع التعليمي للعاملين في القطاع غير الربحي">
 <style>:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <link rel="manifest" href="/manifest.webmanifest">
-<meta name="theme-color" content="#0F3557">
+<meta name="theme-color" content="#0E2A35">
 <link rel="icon" type="image/png" href="/favicon-32.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
